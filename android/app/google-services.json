@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "422256891410",
+    "project_id": "magnetseqrloyalty",
+    "storage_bucket": "magnetseqrloyalty.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422256891410:android:986b481f48e51a407faacb",
+        "android_client_info": {
+          "package_name": "com.kebs_seqrloyalty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422256891410-154e6rqafu3h7oail8ofsg9pgpi3mfi6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxI4TcPuRhX2LRqQxKNAoHvUx1laW3fhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422256891410-154e6rqafu3h7oail8ofsg9pgpi3mfi6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "422256891410-498j7vq27nrlre629bjkmfsh40mhc6s1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.scube.magnetseqrloyalty"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422256891410:android:8913c9f319e84f207faacb",
+        "android_client_info": {
+          "package_name": "com.magnetseqrloyalty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422256891410-154e6rqafu3h7oail8ofsg9pgpi3mfi6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxI4TcPuRhX2LRqQxKNAoHvUx1laW3fhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422256891410-154e6rqafu3h7oail8ofsg9pgpi3mfi6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "422256891410-498j7vq27nrlre629bjkmfsh40mhc6s1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.scube.magnetseqrloyalty"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

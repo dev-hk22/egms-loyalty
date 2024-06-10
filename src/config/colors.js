@@ -1,0 +1,21 @@
+export const COLORS = {
+    white: '#fff',
+    black: '#000',
+    deepskyblue : "#00bfff",
+    firebrick : "#b22222",
+    palevioletred :"#db7093",
+    rosybrown : "#bc8f8f",
+    lightcoral : "#f08080",
+    indianred :"#cd5c5c",
+    steelblue:'#0000ff',
+    crimson:'#D34A44',
+    accepted: "#4CAF50",
+    delivered: "#2196F3",
+    cancelled: "#F44336",
+    rejected: "#FF0000",
+    pending: "#FFC107",
+    shipped: "#FF9800"
+    // steelblue :"#4682b4",
+    // crimson :"#dc143c"
+
+  }
