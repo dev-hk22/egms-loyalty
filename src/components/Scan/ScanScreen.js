@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, BackHandler, Dimensions, Platform, StyleSheet, View, Image, TouchableOpacity, StatusBar, Animated, ScrollView, Easing, PermissionsAndroid, Button, Linking } from 'react-native';
+import { Alert, BackHandler, Dimensions, Platform, StyleSheet, View, Image, TouchableOpacity, StatusBar, Animated, ScrollView, Easing, PermissionsAndroid, Button, Linking, NativeEventEmitter } from 'react-native';
 import { Container, Header, Left, Body, Right, Content, Card, CardItem, Text, Title, Item, Icon, Toast } from 'native-base';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Modal from "react-native-modal";
@@ -22,6 +22,7 @@ import Geolocation from '@react-native-community/geolocation';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 import Colors from '../../Utility/Colors';
 import { NetworkInfo } from 'react-native-network-info';
+import { BarcodeManager } from '@datalogic/react-native-datalogic-module';
 // import ViewShot from "react-native-view-shot";
 
 var redeemMethodsT = [];
@@ -81,7 +82,24 @@ class ScanScreen extends Component {
             }
         );
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+
+        try {
+            const eventEmitter = new NativeEventEmitter(BarcodeManager);
+            eventEmitter.addListener('successCallback', map => {
+                this.getLocation();
+                if(this.state.currentLocation?.longitude){
+                    this._callForAPIRedeem({data : map.barcodeData});
+                }else{
+                    this.permissionAlert();
+                }
+                Alert.alert('Barcode Result', map.barcodeData + '\n' + map.barcodeType);
+            });
+            BarcodeManager.addReadListener();
+        } catch (e) {
+            console.error(e);
+        }
     }
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
         this.didFocusSubscription.remove();
@@ -188,7 +206,7 @@ class ScanScreen extends Component {
     _showModalOffer() { this.setState({ modalValue: 'offers', isModalVisible: !this.state.isModalVisible }); }
     onSuccess(e) {
         console.log("=-=-=-=00000");
-        console.log(e);
+        // console.log(e.data);
 
         this.setState({ showCamera: false, showCameraText: false });
         // this._callForAPICheckCoupon(e);
@@ -232,6 +250,7 @@ class ScanScreen extends Component {
             formData.append('latitude' , this.state?.currentLocation?.latitude || 0);
             formData.append('longitude' , this.state?.currentLocation?.longitude || 0);
             formData.append('userType', this.state.userType);
+            formData.append('deviceType' , Platform.OS);
             if (this.props.languageControl) {
                 formData.append('language', 'en');
             } else {
@@ -977,9 +996,15 @@ class ScanScreen extends Component {
                         loading={this.state.loading}
                         text={this.state.loaderText}
                     />
+                        {/* <Text> </Text>
                         <Text> </Text>
-                        <Text> </Text>
-                        <Text> </Text>
+                        <Text> </Text> */}
+
+                        {/* <RNCamera
+                            style={styles.preview}
+                            onBarCodeRead={this.onSuccess.bind(this)}
+                            captureAudio={false}
+                        /> */}
                     {this.state.showCamera && this.state.flashEnabled ?
                         <QRCodeScanner
                             onRead={this.onSuccess.bind(this)}
@@ -992,9 +1017,6 @@ class ScanScreen extends Component {
                         : <View></View>
                     }
                     {!this.state.flashEnabled ?
-                        // <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
-                        //     <Text>...Something to rasterize...</Text>
-                        // </ViewShot>
                         <QRCodeScanner
                             onRead={this.onSuccess.bind(this)}
                             cameraStyle={{ width: '100%', height: '100%' }}
@@ -1004,9 +1026,9 @@ class ScanScreen extends Component {
                         />
                         : <View />
                     }
+                    {/* <Text> </Text>
                     <Text> </Text>
-                    <Text> </Text>
-                    <Text> </Text>
+                    <Text> </Text> */}
                 </>}
                 <Animated.View style={[{ alignSelf:'center', backgroundColor: this.state.isSuccess ? '#008000' : '#CD5C5C', position: 'absolute', marginTop: '45%', justifyContent:'center' }, { width: this.state.animatedWidth, height: this.state.animatedHeight }]}>
                     {this.state.isSuccess ?
@@ -1059,7 +1081,16 @@ const styles = StyleSheet.create({
         // aspectRatio : 16/9,
         alignSelf : 'center',
         marginTop : 20
-    },  
+    }, 
+    preview: {
+        flex: 1,
+        width: '100%',
+      },
+    barcodeText: {
+        fontSize: 18,
+        color: 'black',
+        padding: 16,
+    }, 
 })
 const mapStateToProps = (state) => {
     console.log(state.VerifierReducer.languageEnglish);

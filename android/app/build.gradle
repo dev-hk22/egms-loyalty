@@ -146,7 +146,7 @@ android {
     }
     defaultConfig {
         applicationId "com.kebs_seqrloyalty"
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
@@ -280,7 +280,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar,*.aar"])
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -313,7 +313,13 @@ dependencies {
     implementation project(':react-native-fast-image')
     implementation project(':rn-fetch-blob')  
     implementation project(':react-native-fs')
-     implementation project(':react-native-inappbrowser-reborn')
+    implementation project(':react-native-inappbrowser-reborn')
+
+    implementation "androidx.lifecycle:lifecycle-process:2.5.1"
+
+    // implementation files("../libs/barcode_scanner_library_v2.6.19.0-release.aar")
+//    implementation 'com.symbol:emdk:13.0.2'
+
     implementation ("androidx.browser:browser:1.4.0"){
         force = true
     }

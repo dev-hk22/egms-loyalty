@@ -561,7 +561,7 @@ class LoginScreen extends Component { //carpenter login screen
                         
                     <TextInput
                   
-                      style ={{ marginLeft:5}}
+                      style ={{ marginLeft:5,width : '90%'}}
                       value={this.state.mobileNumber}
                       // maxLength={10}
                       keyboardType="number-pad"
@@ -582,7 +582,7 @@ class LoginScreen extends Component { //carpenter login screen
                          }
                         <TextInput 
                          
-                          style ={{ marginLeft:5}}
+                          style ={{ marginLeft:5,width : '90%'}}
                           value={this.state.password}
                           placeholder={strings('login.distriPass')}
                           placeholderTextColor={ MyColors.greyColor}

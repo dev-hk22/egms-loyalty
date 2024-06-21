@@ -10,7 +10,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@datalogic/react-native-datalogic-module": "^2.0.3",
     "@dudigital/react-native-zoomable-view": "^1.1.4",
+    "@nextup/react-native-zebra-scanner": "^1.1.0",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/datetimepicker": "^6.3.4",
     "@react-native-community/geolocation": "^3.2.1",
