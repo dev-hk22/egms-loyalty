@@ -40,7 +40,6 @@ target 'kebs_seqrloyalty' do
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
   pod 'react-native-date-picker', :path => '../node_modules/react-native-date-picker'
 
-
   pod 'Firebase', :modular_headers => true 
   pod 'FirebaseCoreInternal', :modular_headers => true 
   pod 'GoogleUtilities', :modular_headers => true 

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.reactnativedatalogicmodule.DatalogicModulePackage;
 import com.reactnativecommunity.geolocation.GeolocationPackage;
 import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.facebook.react.ReactInstanceManager;

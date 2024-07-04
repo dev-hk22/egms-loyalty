@@ -277,7 +277,7 @@ class SideMenu extends Component {
     } if (
       item.title == 'SCAN' || item.title == 'স্ক্যান' || item.title == "Analyse" || item.title == "સ્કેન" || item.title == "स्कैन" || item.title == "ಸ್ಕ್ಯಾನ್ ಮಾಡಿ" || item.title == "स्कॅन" || item.title == "ସ୍କାନ୍ କରନ୍ତୁ |" || item.title == "ਸਕੈਨ" || item.title == "ஊடுகதிர்" || item.title == "స్కాన్" || item.title == "اسکین" || item.title == 'Kanuni' ||
       item.title == 'PROFILE' || item.title == 'प्रोफ़ाइल' || item.title == 'Profil' || item.title == 'प्रोफाइल' || item.title == 'ਪ੍ਰੋਫਾਈਲ' || item.title == 'પ્રોફાઇલ' || item.title == 'ప్రొఫైల్' || item.title == 'சுயவிவரம்' || item.title == 'নথিপত্র' || item.title == 'پروفائل' || item.title == 'ಪ್ರೊಫೈಲ್' || item.title == 'ପ୍ରୋଫାଇଲ୍ |' || item.title == 'MWANDISHI' ||
-      item.title == 'COUPON HISTORY' || item.title == 'कूपन इतिहास' || item.title == 'Historique des coupons' || item.title == 'कूपन इतिहास' || item.title == 'ਕੂਪਨ ਇਤਿਹਾਸ' || item.title == 'કૂપન ઇતિહાસ' || item.title == 'కూపన్ చరిత్ర' || item.title == 'கூப்பன் வரலாறு' || item.title == 'কুপন ইতিহাস' || item.title == 'کوپن کی تاریخ' || item.title == 'ಕೂಪನ್ ಇತಿಹಾಸ' || item.title == 'କୁପନ୍ ଇତିହାସ |' || item.title == 'Historia ya coupon' ||
+      item.title == 'STICKER HISTORY' || item.title == 'कूपन इतिहास' || item.title == 'Historique des stickers' || item.title == 'कूपन इतिहास' || item.title == 'ਕੂਪਨ ਇਤਿਹਾਸ' || item.title == 'કૂપન ઇતિહાસ' || item.title == 'కూపన్ చరిత్ర' || item.title == 'கூப்பன் வரலாறு' || item.title == 'কুপন ইতিহাস' || item.title == 'کوپن کی تاریخ' || item.title == 'ಕೂಪನ್ ಇತಿಹಾಸ' || item.title == 'କୁପନ୍ ଇତିହାସ |' || item.title == 'Historia ya sticker' ||
       item.title == 'CASH-BATCH REPORT' || item.title == "कैश-बैच रिपोर्ट" || item.title == "নগদ-ব্যাচের প্রতিবেদন" || item.title == "Rapport Cash-Batch" || item.title == "કેશ-બેચ રિપોર્ટ" || item.title == "ನಗದು-ಬ್ಯಾಚ್ ವರದಿ" || item.title == "रोख-बॅच अहवाल" || item.title == "ନଗଦ-ବ୍ୟାଚ୍ ରିପୋର୍ଟ" || item.title == "ਨਕਦ-ਬੈਚ ਦੀ ਰਿਪੋਰਟ" || item.title == "Cash-Batch-rapport" || item.title == "பண-தொகுதி அறிக்கை" || item.title == "నగదు-బ్యాచ్ నివేదిక" || item.title == "کیش بیچ کی رپورٹ" ||
       item.title == 'PAYMENT OPTIONS' || item.title == 'भुगतान विकल्प' || item.title == 'Options de paiement' || item.title == 'पैसे भरणासाठीचे पर्याय' || item.title == 'ਭੁਗਤਾਨ ਵਿਕਲਪ' || item.title == 'ચુકવણી વિકલ્પો' || item.title == 'చెల్లింపు పద్ధతులు' || item.title == 'கட்டண விருப்பங்கள்' || item.title == 'অর্থ প্রদানের বিকল্পগুলি' || item.title == 'آدائیگی کے طریقے' || item.title == 'ಪಾವತಿಯ ವಿಧ' || item.title == 'ଦେୟ ବିକଳ୍ପ' || item.title == 'Malengo ya utoaji' ||
       item.title == 'REPORT' || item.title == 'रिपोर्ट' || item.title == 'Rapport' || item.title == 'अहवाल' || item.title == 'ਪ੍ਰੋਫਾਈਲ' || item.title == 'અહેવાલ' || item.title == 'నివేదిక' || item.title == 'அறிக்கை' || item.title == 'প্রতিবেদন' || item.title == 'رپورٹ کریں' || item.title == 'ವರದಿ' || item.title == 'ରିପୋର୍ଟ' || item.title == 'Ripoti' ||
@@ -309,7 +309,7 @@ class SideMenu extends Component {
                 item.title == 'PROFILE' || item.title == 'प्रोफ़ाइल' || item.title == 'Profil' || item.title == 'प्रोफाइल' || item.title == 'ਪ੍ਰੋਫਾਈਲ' || item.title == 'પ્રોફાઇલ' || item.title == 'ప్రొఫైల్' || item.title == 'சுயவிவரம்' || item.title == 'নথিপত্র' || item.title == 'پروفائل' || item.title == 'ಪ್ರೊಫೈಲ್' || item.title == 'ପ୍ରୋଫାଇଲ୍ |' || item.title == 'MWANDISHI' ?
                   <Icon type="FontAwesome" name="user" style={{ fontSize: 18, color: this.props.enableDarkTheme ? 'white' : 'black' }} />
                   :
-                  item.title == 'COUPON HISTORY' || item.title == 'कूपन इतिहास' || item.title == 'Historique des coupons' || item.title == 'कूपन इतिहास' || item.title == 'ਕੂਪਨ ਇਤਿਹਾਸ' || item.title == 'કૂપન ઇતિહાસ' || item.title == 'కూపన్ చరిత్ర' || item.title == 'கூப்பன் வரலாறு' || item.title == 'কুপন ইতিহাস' || item.title == 'کوپن کی تاریخ' || item.title == 'ಕೂಪನ್ ಇತಿಹಾಸ' || item.title == 'କୁପନ୍ ଇତିହାସ |' || item.title == 'Historia ya coupon' ?
+                  item.title == 'STICKER HISTORY' || item.title == 'कूपन इतिहास' || item.title == 'Historique des stickers' || item.title == 'कूपन इतिहास' || item.title == 'ਕੂਪਨ ਇਤਿਹਾਸ' || item.title == 'કૂપન ઇતિહાસ' || item.title == 'కూపన్ చరిత్ర' || item.title == 'கூப்பன் வரலாறு' || item.title == 'কুপন ইতিহাস' || item.title == 'کوپن کی تاریخ' || item.title == 'ಕೂಪನ್ ಇತಿಹಾಸ' || item.title == 'କୁପନ୍ ଇତିହାସ |' || item.title == 'Historia ya sticker' ?
                     <Icon type="FontAwesome" name="book" style={{ fontSize: 18, color: this.props.enableDarkTheme ? 'white' : 'black' }} />
                     :
                     item.title == 'CASH-BATCH REPORT' || item.title == "कैश-बैच रिपोर्ट" || item.title == "নগদ-ব্যাচের প্রতিবেদন" || item.title == "Rapport Cash-Batch" || item.title == "કેશ-બેચ રિપોર્ટ" || item.title == "ನಗದು-ಬ್ಯಾಚ್ ವರದಿ" || item.title == "रोख-बॅच अहवाल" || item.title == "ନଗଦ-ବ୍ୟାଚ୍ ରିପୋର୍ଟ" || item.title == "ਨਕਦ-ਬੈਚ ਦੀ ਰਿਪੋਰਟ" || item.title == "Cash-Batch-rapport" || item.title == "பண-தொகுதி அறிக்கை" || item.title == "నగదు-బ్యాచ్ నివేదిక" || item.title == "کیش بیچ کی رپورٹ" ?
@@ -622,7 +622,7 @@ class SideMenu extends Component {
             />
           </View>
 
-          <Card style={{ marginTop: 20, backgroundColor: this.props.enableDarkTheme ? 'black' : 'white', elevation: 0 }}>
+          {/* <Card style={{ marginTop: 20, backgroundColor: this.props.enableDarkTheme ? 'black' : 'white', elevation: 0 }}>
             <Text style={{ marginTop: 10, marginLeft: 10, fontWeight: 'bold', color: this.props.enableDarkTheme ? 'white' : 'black' }}>{strings('login.choose_lang')} :</Text>
 
             <View style={{ marginLeft: 20, marginRight: 20 }}>
@@ -638,7 +638,7 @@ class SideMenu extends Component {
             </View>
 
            
-          </Card>
+          </Card> */}
          
 
          
@@ -673,7 +673,7 @@ class SideMenu extends Component {
                      </TouchableOpacity>
                  </View> */}
                 
-          <View>
+          <View style={{marginTop: 20}}>
             <Text style={{ textAlign: "center" }}>Version {version}</Text>
           </View>
 

@@ -22,11 +22,12 @@ import Geolocation from '@react-native-community/geolocation';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 import Colors from '../../Utility/Colors';
 import { NetworkInfo } from 'react-native-network-info';
-import { BarcodeManager } from '@datalogic/react-native-datalogic-module';
+import { BarcodeManager } from '@datalogic/react-native-datalogic-module'; // comment to build IOS build
 // import ViewShot from "react-native-view-shot";
 
 var redeemMethodsT = [];
 var redeemMethodsP = [];
+var redeemMethodsUs = [];
 class ScanScreen extends Component {
     constructor(props) {
         super(props);
@@ -64,8 +65,10 @@ class ScanScreen extends Component {
             accesstoken :"",
             redeemedBy:"",
             userType:'',
+            businessName: '',
             carpenterId:'',
-            currentLocation: {}
+            currentLocation: {},
+            endDate:'',
         };
     }
     componentWillMount() { this._getAsyncData(); }
@@ -83,20 +86,22 @@ class ScanScreen extends Component {
         );
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 
-        try {
-            const eventEmitter = new NativeEventEmitter(BarcodeManager);
-            eventEmitter.addListener('successCallback', map => {
-                this.getLocation();
-                if(this.state.currentLocation?.longitude){
-                    this._callForAPIRedeem({data : map.barcodeData});
-                }else{
-                    this.permissionAlert();
-                }
-                Alert.alert('Barcode Result', map.barcodeData + '\n' + map.barcodeType);
-            });
-            BarcodeManager.addReadListener();
-        } catch (e) {
-            console.error(e);
+        if(Platform.OS == 'android'){
+            try {
+                const eventEmitter = new NativeEventEmitter(BarcodeManager);
+                eventEmitter.addListener('successCallback', map => {
+                    this.getLocation();
+                    if(this.state.currentLocation?.longitude){
+                        this._callForAPIRedeem({data : map.barcodeData});
+                    }else{
+                        this.permissionAlert();
+                    }
+                    Alert.alert('Barcode Result', map.barcodeData + '\n' + map.barcodeType);
+                });
+                BarcodeManager.addReadListener();
+            } catch (e) {
+                console.error(e);
+            }
         }
     }
 
@@ -287,8 +292,9 @@ class ScanScreen extends Component {
                 // utilities.showToastMsg(lResponseData.message);
                 redeemMethodsT = lResponseData.couponData;
                 redeemMethodsP = lResponseData.productData;
-                // console.log("=========response" , JSON.stringify(lResponseData , null,2))
-                this.setState({isSuccess: true , cashDetails : redeemMethodsT.value, productName : redeemMethodsP.product_name , productDenomination : redeemMethodsP.product_denomination , scanningBody : lResponseData.message})
+                redeemMethodsUs = lResponseData.userData;
+                console.log("=========response" , JSON.stringify(lResponseData , null,2))
+                this.setState({isSuccess: true , cashDetails : redeemMethodsT.value, productName : redeemMethodsP.product_name , productDenomination : redeemMethodsP.product_denomination , scanningBody : lResponseData.message , businessName: redeemMethodsUs.business_name , endDate : redeemMethodsT?.end_date})
                 // this.setState({ redeemMethods: lResponseData.redeemMethodsT, redeemType: redeemMethodsT[0].redeem_type })
                 // for (var i = 0; i < redeemMethodsT.length; i++) {
                 //     if (redeemMethodsT[i].redeem_type == "1") {
@@ -867,7 +873,7 @@ class ScanScreen extends Component {
                     <Icon type="FontAwesome" name="times-circle-o" style={{ fontSize: 80, color: '#FFFFFF', textAlign: 'center', marginTop: 10 }} />
                 }
 
-                <Text style={{ color: 'white', fontSize: 22, textAlign: 'center', textAlignVertical: 'center',marginVertical : 25,fontWeight : '700'}}>Coupon verified successfully</Text>
+                <Text style={{ color: 'white', fontSize: 22, textAlign: 'center', textAlignVertical: 'center',marginVertical : 25,fontWeight : '700'}}>Sticker verified successfully</Text>
 
                 <View style={styles.itemContainer}>
                     <View style={{width : '38%'}}>
@@ -881,16 +887,30 @@ class ScanScreen extends Component {
                     </View>
                     {/* <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{this.state.productName}</Text>     */}
                 </View>
-                
+
                 <View style={styles.itemContainer}>
                     <View style={{width : '38%'}}>
-                        <Text style={styles.successItem}>Coupon Denomination</Text>
+                        <Text style={styles.successItem}>Expiry Date</Text>
                     </View>
                     <View style={{width : '2%'}}>
                         <Text style={styles.successItem}>:</Text>
                     </View>
                     <View style={{width : '57%'}}>
-                        <Text style={styles.successItem}>{this.state.productDenomination}</Text>
+                        <Text style={styles.successItem}>{Moment(this.state.endDate).format('D MMMM YYYY')}</Text>
+                    </View>
+                </View>
+                
+                <View style={{width : '100%' , height : 0.5 , backgroundColor : 'lightgray' ,marginVertical : 10}}></View>
+                
+                <View style={styles.itemContainer}>
+                    <View style={{width : '38%'}}>
+                        <Text style={styles.successItem}>Manufacturer</Text>
+                    </View>
+                    <View style={{width : '2%'}}>
+                        <Text style={styles.successItem}>:</Text>
+                    </View>
+                    <View style={{width : '57%'}}>
+                        <Text style={styles.successItem}>{this.state.businessName}</Text>
                     </View>
                 </View>
 
@@ -905,7 +925,7 @@ class ScanScreen extends Component {
                         <Text style={styles.successItem}>{this.state.userMobile}</Text>
                     </View>
                 </View>
-                {/* <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{`Coupon Denomination : ${this.state.productDenomination}`}</Text>
+                {/* <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{`Sticker Denomination : ${this.state.productDenomination}`}</Text>
                 <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{`Mobile No. : ${this.state.userMobile}`}</Text> */}
                 
                 <View style={{width : '100%' , height : 0.5 , backgroundColor : 'lightgray' ,marginVertical : 10}}></View>

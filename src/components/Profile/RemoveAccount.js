@@ -200,7 +200,7 @@ export default class RemoveAccount extends Component {
                             <View style={{  marginLeft:20, marginRight:10}}>
                             <Text style={{textAlign:'justify', fontSize:15 }}>{'\u2B24'} Your basic profiling details like Name, Phone Number, Email-ID and login password.</Text>
                             <Text style={{ marginTop:5, textAlign:'justify',fontSize:15 }}>{'\u2B24'} A log of all your log-ins and logout sessions with timestamp and device-id, for security reasons.</Text>
-                            <Text style={{  marginTop:5,textAlign:'justify',fontSize:15 }}>{'\u2B24'} Whenever you scan a Coupon for verification, we maintain your scan history and payment history, if applicable.</Text>
+                            <Text style={{  marginTop:5,textAlign:'justify',fontSize:15 }}>{'\u2B24'} Whenever you scan a Sticker for verification, we maintain your scan history and payment history, if applicable.</Text>
                             <Text></Text>
                             </View>
                         
@@ -217,7 +217,7 @@ export default class RemoveAccount extends Component {
                            
                             <View style={{ flexDirection:"row",marginLeft:15,marginRight:10,marginTop:5}}>
                             {/* <Icon name="times" type="FontAwesome" style={{ fontSize: 15, color: 'red' }} /> */}
-                            <Text style={{ textAlign:'justify',fontSize:15 }}>{'\u274C'} Any Coupon that you have verified till date, will be removed and will no longer be associated with your account. Thus, you have to re-scan them or/and make re-payments, if applicable.</Text>
+                            <Text style={{ textAlign:'justify',fontSize:15 }}>{'\u274C'} Any Sticker that you have verified till date, will be removed and will no longer be associated with your account. Thus, you have to re-scan them or/and make re-payments, if applicable.</Text>
                             <Text></Text>
                             </View>
                             </View>

@@ -50,6 +50,7 @@ import CustomerProfileScreen from '../components/CustomerComponent/CustomerProfi
 import CustomerOrderHistoryScreen from '../components/CustomerComponent/CustomerOrderHistoryScreen';
 import CustomerScanScreen from '../components/CustomerComponent/CustomerScanScreen';
 import OrderDetailsScreen from '../components/CustomerComponent/OrderDetailsScreen';
+import TermsOfService from '../components/Profile/TermsOfService';
 
 
 
@@ -119,13 +120,13 @@ const MainNavigator = createStackNavigator({
   DistributorScreen: { screen: DistributorScreen, navigationOptions: { header: null } },
   TutorialScreen: {screen: TutorialScreen, navigationOptions:{ header:null }},
   MyWebView: {screen:MyWebView,navigationOptions:{header:null}},
-  RemoveAccount: { screen: RemoveAccount, navigationOptions:{header:null}}
-
+  RemoveAccount: { screen: RemoveAccount, navigationOptions:{header:null}},
+  TermsOfService: { screen: TermsOfService, navigationOptions:{header:null}}
 
 },
   {
-    initialRouteName: "LanguageSelection",
-    
+    // initialRouteName: "LanguageSelection",
+    initialRouteName: "LoginScreen",
     // initialRouteName: "LandingScreen",
   }
 );

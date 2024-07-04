@@ -612,19 +612,19 @@ class CustomerHomeScreen extends Component {
 
                     <Card style={{ flex: 0.5, marginRight: 5, padding: 5 ,borderRadius:10}}>
                       <View style={{ flexDirection:'row',marginBottom:5,}}>
-                      <Text style={{ textAlign:'left', fontWeight:'bold',fontSize:18,marginLeft:2 }}>Coupon Information</Text>
+                      <Text style={{ textAlign:'left', fontWeight:'bold',fontSize:18,marginLeft:2 }}>Sticker Information</Text>
                       <Text style={{  textAlign: 'right',fontSize:18, flex:1, marginRight:8,color:'darkgray'}}>Total</Text>
                       </View>
                       <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
-                        <Text style={{ padding:8, textAlign: 'left',fontSize:14 ,flex:3,marginLeft:2, }}>Total Coupons</Text>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14 ,flex:3,marginLeft:2, }}>Total Stickers</Text>
                         <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalCouponCount}</Text>
                       </View>
                       <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
-                        <Text style={{ padding:8, textAlign: 'left',fontSize:14,flex:3,marginLeft:2  }}>Total Coupons Floated</Text>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14,flex:3,marginLeft:2  }}>Total Stickers Floated</Text>
                         <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalCouponsActiveCount}</Text>
                       </View>
                       <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
-                        <Text style={{ padding:8, textAlign: 'left',fontSize:14,flex:3,marginLeft:2  }}>Total Coupons Verified</Text>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14,flex:3,marginLeft:2  }}>Total Stickers Verified</Text>
                         <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalScannedCouponsCount}</Text>
                       </View>
                     </Card>

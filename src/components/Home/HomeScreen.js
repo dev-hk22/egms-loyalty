@@ -684,7 +684,7 @@ class HomeScreen extends Component {
                         <Icon2 type="Ionicons" name="wallet" style={{ textAlignVertical: 'center', textAlign: 'center', fontSize:24, width:35, height:35 ,color: MyColors.dashboard_text2 }} />
                         </Row>
                         <Row style={{ justifyContent: 'center' }}>
-                          // comment these line <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of coupons scanned"}</Text> 
+                          // comment these line <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of stickers scanned"}</Text> 
                           <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: this.props.languageControl == 'Tamil - (தமிழ்)' ? 12 : 16, color: MyColors.dashboard_text2  }}>{strings('login.total_redemption_amount_till_d')}</Text>
                         </Row>
                         <Row style={{ justifyContent: 'center' }}>
@@ -700,7 +700,7 @@ class HomeScreen extends Component {
                         <Icon2 type="Ionicons" name="checkmark" style={{ textAlignVertical: 'center', textAlign: 'center', fontSize:24, width:35, height:35 ,color: MyColors.dashboard_text3 }} />
                         </Row>
                         <Row style={{ justifyContent: 'center' }}>
-                          // comment these line <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of coupons scanned"}</Text>
+                          // comment these line <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of stickers scanned"}</Text>
                           <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: this.props.languageControl == 'Tamil - (தமிழ்)' ? 12 : 16, color: MyColors.dashboard_text3 }}>{strings('login.total_redemption_amount_till_date')}</Text>
                         </Row>
                         <Row style={{ justifyContent: 'center' }}>
@@ -714,7 +714,7 @@ class HomeScreen extends Component {
                         <Icon2 type="Ionicons" name="timer" style={{ textAlignVertical: 'center', textAlign: 'center', fontSize:24, width:35, height:35 ,color: MyColors.dashboard_text4  }} />
                         </Row>
                         <Row style={{ justifyContent: 'center' }}>
-                        // comment these line  <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of coupons scanned"}</Text> 
+                        // comment these line  <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of stickers scanned"}</Text> 
                           <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: this.props.languageControl == 'Tamil - (தமிழ்)' ? 12 : 16, color: MyColors.dashboard_text4 }}>{strings('login.total_coupons_scanned_for_scheme')}</Text>
                         </Row>
                         <Row style={{ justifyContent: 'center' }}>

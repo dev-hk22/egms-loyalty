@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -42,7 +42,7 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>$(PRODUCT_NAME) uses your calendar.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Your permission is required to access the camera and scan the coupon.</string>
+	<string>Your permission is required to access the camera and scan the sticker.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>$(PRODUCT_NAME) requires contacts access to function properly.</string>
 	<key>NSLocationAlwaysUsageDescription</key>

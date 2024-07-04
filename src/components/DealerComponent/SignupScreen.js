@@ -19,6 +19,7 @@ import { strings } from '../../locales/i18n';
 import MyColors from '../../Utility/Colors';
 import AsyncStorage from '@react-native-community/async-storage';
 import DeviceNumber from 'react-native-device-number';
+import CheckBox from 'react-native-check-box';
 // import FileUpload from './FileUpload';
 
 export default class DealerSignupScreen extends Component {
@@ -58,6 +59,7 @@ export default class DealerSignupScreen extends Component {
             confirmpasswordError:'',
             showPW:false,
             isShowImage:false,
+            isCheck: false,
         }
     }
 
@@ -289,7 +291,7 @@ export default class DealerSignupScreen extends Component {
 
                         <Item stackedLabel style={{ marginTop: 5 }}>
                             <Label style={{ color: MyColors.distributorColor, fontSize: 16 }}>{strings('login.mobileN')}*:</Label>
-                            <Input placeholderTextColor="#ccc"  placeholder="+254 Mobile Number" keyboardType="numeric" value={this.state.mobileNo} onChangeText={(e) => this.setState({ mobileNo: e.replace(/[^0-9]/g, '') })} />
+                            <Input placeholderTextColor="#ccc"  placeholder="+254 Mobile Number" keyboardType="numeric" value={this.state.mobileNo} maxLength={10} onChangeText={(e) => this.setState({ mobileNo: e.replace(/[^0-9]/g, '') })} />
                         </Item>
                         {this.state.mobileNoError.length > 0 ? <Text style={{ color: "red", textAlign: "center", }}>{this.state.mobileNoError}</Text> : <View />}
                         
@@ -418,7 +420,22 @@ export default class DealerSignupScreen extends Component {
                             <Input placeholderTextColor="#ccc" secureTextEntry placeholder="Confirm Password"  value={this.state.confirmpassword} onChangeText={(e) => this.setState({ confirmpassword: e })} />
                         </Item>
                         {this.state.confirmpasswordError.length > 0 ? <Text style={{ color: "red", textAlign: "center", }}>{this.state.confirmpasswordError}</Text> : <View />}
-                        <Button  onPress={() => this.signupDealer()} style={{ width: '90%', alignSelf: "center", marginTop: 30, backgroundColor: MyColors.distributorColor , justifyContent: "center", borderRadius:25 }}>
+
+                        <View style={{
+                            flexDirection : 'row',   
+                            marginTop: 10,
+                            marginHorizontal : 10  
+                        }}>
+                            <CheckBox
+                                style={{marginRight : 5}}
+                                onClick={()=>{this.setState({isCheck : !this.state.isCheck})}}
+                                isChecked={this.state.isCheck}
+                            />
+                            <Text>{'I agree with'}</Text>
+                            <TouchableOpacity onPress={()=>{this.props.navigation.navigate('TermsOfService')}}><Text style={{color: 'blue'}}>{' terms of service'}</Text></TouchableOpacity>
+                        </View>
+
+                        <Button disabled={!this.state.isCheck} backgroundColor={this.state.isCheck ? MyColors.distributorColor : 'lightgray'}  onPress={() => this.signupDealer()} style={{ width: '90%', alignSelf: "center", marginTop: 20, justifyContent: "center", borderRadius:25 }}>
                             <Text style={{ textAlign: "center", color: "white", }}>{strings('login.signup_button')}</Text>
                         </Button>
                         <Text />

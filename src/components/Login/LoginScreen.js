@@ -359,9 +359,9 @@ class LoginScreen extends Component { //carpenter login screen
     let lMobileNumber = this.state.mobileNumber;
     const formData = new FormData();
 
-    // formData.append('mobileNo', lMobileNumber);
+    formData.append('mobileNo', lMobileNumber);
     // formData.append('userType', this.state.user);
-    formData.append('emailId', lMobileNumber);
+    // formData.append('emailId', lMobileNumber);
     // formData.append('distributorCode', this.state.distributorId);
     // formData.append('deviceToken', app.FCMTOKEN);
     formData.append('appVersion', "1.0");
@@ -563,7 +563,7 @@ class LoginScreen extends Component { //carpenter login screen
                   
                       style ={{ marginLeft:5,width : '90%'}}
                       value={this.state.mobileNumber}
-                      // maxLength={10}
+                      maxLength={10}
                       keyboardType="number-pad"
                       placeholder={`+254 ${strings('login.paymentOptions_screen_placeholder_mobileno')}`}
                       placeholderTextColor={ MyColors.greyColor}

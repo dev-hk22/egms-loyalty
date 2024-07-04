@@ -793,7 +793,7 @@ class CustomerScanScreen extends Component {
                     <Icon type="FontAwesome" name="times-circle-o" style={{ fontSize: 80, color: '#FFFFFF', textAlign: 'center', marginTop: 10 }} />
                 }
 
-                <Text style={{ color: 'white', fontSize: 22, textAlign: 'center', textAlignVertical: 'center',marginVertical : 25,fontWeight : '700'}}>Coupon redeemed successfully</Text>
+                <Text style={{ color: 'white', fontSize: 22, textAlign: 'center', textAlignVertical: 'center',marginVertical : 25,fontWeight : '700'}}>Sticker redeemed successfully</Text>
 
                 <View style={styles.itemContainer}>
                     <View style={{width : '38%'}}>
@@ -810,7 +810,7 @@ class CustomerScanScreen extends Component {
                 
                 <View style={styles.itemContainer}>
                     <View style={{width : '38%'}}>
-                        <Text style={styles.successItem}>Coupon Denomination</Text>
+                        <Text style={styles.successItem}>Sticker Denomination</Text>
                     </View>
                     <View style={{width : '2%'}}>
                         <Text style={styles.successItem}>:</Text>
@@ -831,7 +831,7 @@ class CustomerScanScreen extends Component {
                         <Text style={styles.successItem}>{this.state.userMobile}</Text>
                     </View>
                 </View>
-                {/* <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{`Coupon Denomination : ${this.state.productDenomination}`}</Text>
+                {/* <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{`Sticker Denomination : ${this.state.productDenomination}`}</Text>
                 <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{`Mobile No. : ${this.state.userMobile}`}</Text> */}
                 
                 <View style={{width : '100%' , height : 0.5 , backgroundColor : 'lightgray' ,marginVertical : 10}}></View>

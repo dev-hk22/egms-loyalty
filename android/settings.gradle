@@ -1,4 +1,6 @@
 rootProject.name = 'kebs_seqrloyalty'
+include ':@datalogic_react-native-datalogic-module'
+project(':@datalogic_react-native-datalogic-module').projectDir = new File(rootProject.projectDir, '../node_modules/@datalogic/react-native-datalogic-module/android')
 include ':@react-native-community_geolocation'
 project(':@react-native-community_geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/geolocation/android')
 include ':react-native-background-task'
