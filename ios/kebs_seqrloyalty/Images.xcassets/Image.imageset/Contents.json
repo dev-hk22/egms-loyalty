@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_launcher-playstore.png",
+      "filename" : "40.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ic_launcher-playstore@2x.png",
+      "filename" : "60.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ic_launcher-playstore@3x.png",
+      "filename" : "80.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
