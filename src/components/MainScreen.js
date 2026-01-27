@@ -49,7 +49,7 @@ const MainScreen = (props) => {
         }}>
             <View style={styles.container}>
                 <Image
-                    style={{ width: deviceWidth, aspectRatio : 16/7}}
+                    style={{ width: 300, height: 300, alignSelf: "center",  }}
                     resizeMode="contain"
                     source={require("../images/wwe.png")}
                 />
@@ -58,14 +58,14 @@ const MainScreen = (props) => {
                         onPress={() => {props.navigation.navigate('CustomerLoginScreen')}}
                     >
                         <View style={styles.buttonVerifier}>
-                        <Text style={styles.buttonText}>SIGN IN AS CUSTOMER</Text>
+                        <Text style={styles.buttonText}>OFFICER LOGIN</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {props.navigation.navigate('LoginScreen')}}
                     >
                         <View style={styles.buttonInstitute}>
-                        <Text style={styles.buttonText}>SIGN IN AS PUBLIC</Text>
+                        <Text style={styles.buttonText}>PUBLIC VERIFIER </Text>
                         </View>
                     </TouchableOpacity>
                 </View>

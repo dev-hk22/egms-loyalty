@@ -6,7 +6,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import VerifierService from '../../../services/VerifierService/VerifierService';
 import CustomHeader from '../../../Utility/CustomHeader';
 
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 // import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import Loader from '../../../Utility/Loader';
@@ -200,7 +200,7 @@ export default class InstituteCertificateViewScreen extends React.Component {
 									</TouchableOpacity>
 								</View>
 
-								<Pdf
+								{/* <Pdf
 									source={source}
 									onLoadComplete={(numberOfPages, filePath) => {
 										console.log(`number of pages: ${numberOfPages}`);
@@ -211,7 +211,7 @@ export default class InstituteCertificateViewScreen extends React.Component {
 									onError={(error) => {
 										console.log(error);
 									}}
-									style={styles.pdf} />
+									style={styles.pdf} /> */}
 
 							</View>
 						</ScrollView>

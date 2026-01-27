@@ -4,7 +4,7 @@ import { Container, Header, Left, Body, Right, Content, Card, CardItem, Text, Ti
 import QRCodeScanner from 'react-native-qrcode-scanner';
 // import Torch from 'react-native-torch';
 import VerifierService from '../../../services/VerifierService/VerifierService';
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 // import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 
@@ -173,7 +173,7 @@ export default class CertificateViewScreen extends React.Component {
 									</TouchableOpacity>
 								</View>
 
-								<Pdf
+								{/* <Pdf
 									source={source}
 									onLoadComplete={(numberOfPages, filePath) => {
 										console.log(`number of pages: ${numberOfPages}`);
@@ -184,7 +184,7 @@ export default class CertificateViewScreen extends React.Component {
 									onError={(error) => {
 										console.log(error);
 									}}
-									style={styles.pdf} />
+									style={styles.pdf} /> */}
 
 							</View>
 						</ScrollView>

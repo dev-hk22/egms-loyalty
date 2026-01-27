@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, BackHandler, StatusBar, StyleSheet, View, TouchableOpacity, ScrollView, Image,Linking, Dimensions, PermissionsAndroid, Platform , Alert} from 'react-native';
+import { ActivityIndicator, BackHandler, StatusBar, StyleSheet, View, TouchableOpacity, ScrollView, Image,Linking, Dimensions, PermissionsAndroid, Platform} from 'react-native';
 import Drawer from 'react-native-drawer';
 import { Header, Left, Body, Right, Card, Text, Title, Button, Icon } from 'native-base';
 import IconBadge from 'react-native-icon-badge';
-// import SideMenu from '../../config/SideMenu';
+import SideMenu from '../../config/SideMenu';
 import * as utilities from '../../Utility/utilities';
 import App, * as app from '../../App';
 import { URL, APIKEY  } from '../../App';
@@ -86,11 +86,12 @@ class CustomerHomeScreen extends Component {
       totalAmountPending:0,
       totalAmountRedeemed:0,
       totalCouponsRedeemed:0,
-      ACCESSTOKEN :'',
+      ACCESSTOKEN :'RD9OIGoTl7amCKgmUj2pQeyhDSeD9G',
       offer_images:[],
       show_carousel: true,
       showFullImage: false,
       show_single_image:[],
+      dashboardData : {},
       carpenter_name:''
       
     };
@@ -123,75 +124,36 @@ class CustomerHomeScreen extends Component {
     // navigator.geolocation.clearWatch(this.watchId);
   }
 
-  requestCameraPermission = async () => {
+  requestLocationPermission = async () => {
+    if(Platform.OS == "ios"){
+      console.log("IOS request ")
+      request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
+        console.log(result)
+      });
+    }else{     
       try {
-        if (Platform.OS === 'ios') {
-          const result = await request(PERMISSIONS.IOS.CAMERA);
-  
-           console.log('iOS Camera permission granted' , result);
-  
-          return result === RESULTS.GRANTED;
-  
-         
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Geolocation Permission',
+            message: 'Can we access your location?',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === 'granted') {
+          console.log('You can use Geolocation');
+          return true;
         } else {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.CAMERA,
-            {
-              title: 'Camera Permission',
-              message: 'Camera access is required to scan QR codes.',
-              buttonPositive: 'OK',
-            },
-          );
-  
-          return granted === PermissionsAndroid.RESULTS.GRANTED;
+          console.log('You cannot use Geolocation');
+          return false;
         }
-      } catch (error) {
-        console.log('Camera permission error:', error);
+      } catch (err) {
         return false;
       }
-    };
-  
-    requestLocationPermission = async () => {
-      if (Platform.OS == 'ios') {
-        console.log('IOS request ');
-        try {
-          const result = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
-  
-          if (result === RESULTS.GRANTED) {
-            console.log('iOS Location permission granted');
-            return true;
-          } else {
-            console.log('iOS Location permission not granted:', result);
-            return false;
-          }
-        } catch (error) {
-          console.log('iOS permission error:', error);
-          return false;
-        }
-      } else {
-        try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            {
-              title: 'Geolocation Permission',
-              message: 'Can we access your location?',
-              buttonNeutral: 'Ask Me Later',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
-            },
-          );
-          if (granted === 'granted') {
-            console.log('You can use Geolocation');
-            return true;
-          } else {
-            console.log('You cannot use Geolocation');
-            return false;
-          }
-        } catch (err) {
-          return false;
-        }
-      }
-    };
+    }
+};
 
   handleDatePicked = date => {
     this.reportDataa = []
@@ -227,31 +189,31 @@ class CustomerHomeScreen extends Component {
   };
 
 
-  async _callForLogoutAPI() {
-    this.setState({ loading: true });
-    const formData = new FormData();
-    formData.append('officerUserId', this.distributorId);
-    formData.append('deviceToken', app.FCMTOKEN);
-    formData.append('userType', this.state.userType);
+  // async _callForLogoutAPI() {
+  //   this.setState({ loading: true });
+  //   const formData = new FormData();
+  //   formData.append('authUserId', this.distributorId);
+  //   formData.append('deviceToken', app.FCMTOKEN);
+  //   formData.append('userType', this.state.userType);
 
-    var loginApiObj = new LoginService();
-    await loginApiObj.logOutCustomer(formData);
-    var lResponseData = loginApiObj.getRespData();
-    this.closeActivityIndicator();
-    console.log(lResponseData);
-    this.setState({ loading: false });
-    if (!lResponseData) {
-      utilities.showToastMsg('Something went wrong. Please try again later');
-    } else if (lResponseData.status == 200) {
-      AsyncStorage.clear();
-      utilities.showToastMsg(lResponseData.message);
-      this.props.navigation.navigate('LoginScreen');
+  //   var loginApiObj = new LoginService();
+  //   await loginApiObj.logOutCustomer(formData);
+  //   var lResponseData = loginApiObj.getRespData();
+  //   this.closeActivityIndicator();
+  //   console.log(lResponseData);
+  //   this.setState({ loading: false });
+  //   if (!lResponseData) {
+  //     utilities.showToastMsg('Something went wrong. Please try again later');
+  //   } else if (lResponseData.status == 200) {
+  //     AsyncStorage.clear();
+  //     utilities.showToastMsg(lResponseData.message);
+  //     this.props.navigation.navigate('CustomerLoginScreen');
 
-    } else {
-      utilities.showToastMsg('Something went wrong. Please try again later');
-    }
+  //   } else {
+  //     utilities.showToastMsg('Something went wrong. Please try again later');
+  //   }
 
-  }
+  // }
   handleBackPress = () => {
     
     BackHandler.exitApp();
@@ -275,7 +237,7 @@ class CustomerHomeScreen extends Component {
   }
 
   // _pushNotification = (formData) => {
-  //   var lUrl = URL + 'getNotificationsCountOfficerUser';
+  //   var lUrl = URL + 'getNotificationsCountCarpenter';
   //   fetch(lUrl, {
   //     method: 'POST',
   //     headers: {
@@ -324,10 +286,11 @@ class CustomerHomeScreen extends Component {
       console.log("at",at);
       if(lData == null)
       {
-        this.props.navigation.navigate('LoginScreen');
+        this.props.navigation.navigate('CustomerLoginScreen');
         return;
       }
       if (lData) {
+        console.log("lData" + lData.data);
         this.distributorId = lData.data.id;
         this.setState({ userType: lData.data.userType , ACCESSTOKEN : at,})
         carpenter_name = lData.data.full_name;
@@ -356,12 +319,12 @@ class CustomerHomeScreen extends Component {
         'accesstoken': this.state.ACCESSTOKEN
       },
       body: pFormData,
-      
     })
       .then((response) => response.json())
       .then((responseJson) => {
         console.log("==-=-="+lUrl+"----"+APIKEY+"----"+this.state.ACCESSTOKEN+"---"+pFormData);
         console.log(responseJson);
+        console.log(responseJson.status);
         this.setState({ loading: false });
         this.closeActivityIndicator();
         var lResponseData = responseJson;
@@ -369,7 +332,7 @@ class CustomerHomeScreen extends Component {
           utilities.showToastMsg('Something went wrong. Please try again later');
         } else if (lResponseData.status == 403) {
           utilities.showToastMsg(lResponseData.message);
-          // this.props.navigation.navigate('LoginScreen');
+          // this.props.navigation.navigate('CustomerLoginScreen');
           this.props.navigation.navigate('CustomerLoginScreen');
           AsyncStorage.clear();
           return;
@@ -378,14 +341,6 @@ class CustomerHomeScreen extends Component {
           utilities.showToastMsg(lResponseData.message);
         } else if (lResponseData.status == 200) {
           this._setDashboardData(lResponseData);
-          // if(lResponseData.bankDetails == 1){
-          //   this._setDashboardData(lResponseData);
-          // }
-          // else if(lResponseData.bankDetails == 0)
-          // {
-          //   utilities.showToastMsg("Please update the bank details before scanning.")
-          //   this.props.navigation.navigate('PaymentDetailsScreen');
-          // }
         } else {
           utilities.showToastMsg('Something went wrong. Please try again later');
         }
@@ -398,24 +353,13 @@ class CustomerHomeScreen extends Component {
   _getDashboardData = () => {
     this.setState({ loading: true })
     const formData = new FormData();
-    formData.append('userType', 6);
-    // if (this.state.userType == 2) {
-    //   formData.append('dealerId', this.distributorId);
-    //   formData.append('month', JSON.parse(this.state.selectedMonthId));
-    //   formData.append('year', this.state.selectedYear);
-    //   formData.append('distributorId', this.distributorId);
-    // } else {
-      formData.append('officerUserId', this.distributorId);
-      formData.append('startDate', this.state.frmDate);
-      formData.append('endDate', this.state.toDate);
-    // }
-    // formData.append('startDate', moment(this.state.frmDate, 'YYYY-MM-DD'));
-    // formData.append('endDate', moment(this.state.toDate, 'YYYY-MM-DD'));
-    if (this.props.languageControl) {
-      formData.append('language', 'en');
-    } else {
-      formData.append('language', 'hi');
-    }
+    
+    formData.append('officerUserId', this.distributorId);
+    formData.append('startDate', "2024-06-03 00:00:00");
+    formData.append('end_date', "2024-06-03 00:00:00");
+    formData.append('userType', "6");
+    formData.append('language', "en");
+    
     this.getDashboard(formData)
     // this._pushNotification(formData);
 
@@ -437,42 +381,21 @@ class CustomerHomeScreen extends Component {
   }
 
   _setDashboardData(lResponseData) {
-    this.setState(
-      {
-        totalAmountRedeemed: lResponseData.totalAmountRedeemed ,
-        totalCouponsRedeemed: lResponseData.totalCouponsRedeemed,
-        totalAmountReceived: lResponseData.totalAmountReceived ,
-        totalAmountPending: lResponseData.totalAmountPending,
-        // totalCouponsRedeemedCash: lResponseData.totalCouponsRedeemedCash,
-        // totalCouponsRedeemedFOC: lResponseData.totalCouponsRedeemedFOC
-      });
+    this.setState({dashboardData : lResponseData});
+    // this.setState(
+    //   {
+    //     totalAmountRedeemed: lResponseData.totalAmountRedeemed ,
+    //     totalCouponsRedeemed: lResponseData.totalCouponsRedeemed,
+    //     totalAmountReceived: lResponseData.totalAmountReceived ,
+    //     totalAmountPending: lResponseData.totalAmountPending,
+    //     // totalCouponsRedeemedCash: lResponseData.totalCouponsRedeemedCash,
+    //     // totalCouponsRedeemedFOC: lResponseData.totalCouponsRedeemedFOC
+    //   });
   }
-  _onPressScanButton = async () => {
-     const locationGranted = await this.requestLocationPermission();
-  const cameraGranted = await this.requestCameraPermission();
-
-    if (locationGranted && cameraGranted) {
-      this.props.navigation.navigate('CustomerScanScreen');
-      console.log("CustomerScanScreen")
-    } else {
-      Alert.alert(
-        'Location Permission Required',
-        Platform.OS === 'android'
-          ? 'To scan QR codes, please allow Location access.\n\n' +
-              'Go to:\nSettings > Apps > EGMS SeQR Loyalty > Permissions > Location > Allow all the time'
-          : 'To scan QR codes, please allow Location access.\n\n' +
-              'Go to:\nSettings > EGMS SeQR Loyalty > Location > Always',
-        [
-          {text: 'Cancel', style: 'cancel'},
-          {
-            text: 'Open Settings',
-            onPress: () => Linking.openSettings(),
-          },
-        ],
-      );
-    }
-  };
-
+  _onPressScanButton = () => {
+    this.props.navigation.navigate('CustomerScanScreen');
+    // this.props.navigation.navigate('OrderDetailsScreen');
+  }
   _setMonth(month, monthList) {
     if (monthList) {
       let idForMonth = _.filter(monthList, { value: month })[0].id
@@ -524,7 +447,7 @@ class CustomerHomeScreen extends Component {
   async _callForImagesAPI() {
     // this.setState({ loading: true });
     const formData = new FormData();
-    formData.append('officerUserId', this.distributorId);
+    formData.append('carpenterId', this.distributorId);
     var lUrl = URL + 'getOffers';
     fetch(lUrl, {
       method: 'POST',
@@ -571,6 +494,8 @@ class CustomerHomeScreen extends Component {
       });
   }
 
+
+
   render() {
     // if (!this.props.languageControl) {
     //   this.monthList = [{ id: '1', 'value': strings('login.homeScreen_january') }, { id: '2', 'value': strings('login.homeScreen_feb') }, { id: '3', 'value': strings('login.homeScreen_march') }, { id: '4', 'value': strings('login.homeScreen_april') },
@@ -598,7 +523,7 @@ class CustomerHomeScreen extends Component {
           <Right style={{ flex: 0.1 }}>
             
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => { this._onPressNotificationIcon() }}>
+                {/* <TouchableOpacity onPress={() => { this._onPressNotificationIcon() }}>
                   <IconBadge
                     MainElement={
                       <Icon type="FontAwesome" name="bell" style={{ fontSize: 25, height: 35, width: 35, color: '#FFFFFF', margin: 7, marginBottom: 0 }} />
@@ -610,14 +535,12 @@ class CustomerHomeScreen extends Component {
                       {
                         width: 20,
                         height: 20,
-                        //  backgroundColor: '#FF00EE',
                         backgroundColor: MyColors.dealerColor,
                         marginRight: 5
                       }
                     }
-                  // Hidden={this.state.BadgeCount == 0}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 {/* <Menu>
 							<MenuTrigger>
@@ -668,107 +591,65 @@ class CustomerHomeScreen extends Component {
           closedDrawerOffset={-3}
           styles={drawerStyles}
         >
-            { !this.state.showFullImage ?
+            { !this.state.showFullImage ?       
           <View style={{ flex: 1, padding: 5, marginTop: -1, backgroundColor:"#cccccc15" }}>
        
               <ScrollView maximumZoomScale={1} keyboardShouldPersistTaps={'handled'}>
 
-              {this.state.show_carousel ?
+                  <View style={{ flex: 1, flexDirection: 'column' ,marginTop : 10}}>
+                    <Card style={{ flex: 0.5, marginRight: 5, padding: 5 ,borderRadius:10}}>
+                      <View style={{ flexDirection:'row',marginBottom:5,}}>
+                      <Text style={{ textAlign:'left', fontWeight:'bold',fontSize:18,marginLeft:2 }}>Order Information</Text>
+                      <Text style={{  textAlign: 'right',fontSize:18, flex:1, marginRight:8,color:'darkgray'}}>Total</Text>
+                      </View>
+                      <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14 ,flex:3,marginLeft:2, }}>Total Orders</Text>
+                        <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalOrderCount}</Text>
+                      </View>
+                      <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14,flex:3,marginLeft:2  }}>Total Orders Approved</Text>
+                        <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalApprovedOrderCount}</Text>
+                      </View>
+                      <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14,flex:3,marginLeft:2  }}>Total Orders Pending</Text>
+                        <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalPendingOrderCount}</Text>
+                      </View>
+                    </Card>
 
-<View></View>
-                          :
-                          <View></View>
-                          }
+                    <Card style={{ flex: 0.5, marginRight: 5, padding: 5 ,borderRadius:10}}>
+                      <View style={{ flexDirection:'row',marginBottom:5,}}>
+                      <Text style={{ textAlign:'left', fontWeight:'bold',fontSize:18,marginLeft:2 }}>Sticker Information</Text>
+                      <Text style={{  textAlign: 'right',fontSize:18, flex:1, marginRight:8,color:'darkgray'}}>Total</Text>
+                      </View>
+                      <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14 ,flex:3,marginLeft:2, }}>Total Stickers</Text>
+                        <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalCouponCount}</Text>
+                      </View>
+                      <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14,flex:3,marginLeft:2  }}>Total Stickers Floated</Text>
+                        <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalCouponsActiveCount}</Text>
+                      </View>
+                      <View style={{ backgroundColor:'#EBF5FB',margin:2,borderRadius:5,flexDirection:'row'}}>
+                        <Text style={{ padding:8, textAlign: 'left',fontSize:14,flex:3,marginLeft:2  }}>Total Stickers Verified</Text>
+                        <Text style={{ padding:8, textAlign: 'right',fontSize:14,marginLeft:2, flex:1, marginRight:2}}>{this.state.dashboardData?.totalScannedCouponsCount}</Text>
+                      </View>
+                    </Card>
+                    
+                  </View>
 
+                  <Text />
+                  <View style={{ marginTop: 10, width: 150, justifyContent: 'center', flex: 1, alignSelf: 'center' }}>
+                    {/* <Button onPress={this._onPressScanButton} title="SCAN" /> */}
+                    <Button style={{ justifyContent:'center', alignContent:'center',
+                    backgroundColor: this.state.userType == 2 ? MyColors.dealerColor : MyColors.distributorColor , borderRadius: 20 }} 
+                    onPress={this._onPressScanButton}>
+                      <Text style={{ textAlign: 'center', flex: 1, fontWeight: 'bold', fontSize: 18 }}>{strings('login.scan_button')}</Text>
+                      {/* <Icon2 type="Ionicons" name="qr-code" style={{ textAlign:'center', fontSize:24,paddingRight:10 ,color: MyColors.white }} /> */}
+                      </Button>
+                  </View>
                   
-
-                <Grid style={{marginTop: 10}}>
-                  <Row>
-                    <Col>
-                      <Card style={{  height: 150, marginRight: 5, padding: 5, borderWidth:2, overflow:'hidden', backgroundColor: MyColors.dashboard_box1, borderRadius:10, borderColor:MyColors.dashboard_text1}}>
-                      <Row style={{ justifyContent: 'center',alignItems:'center' }}>
-                        <Icon2 type="Ionicons" name="scan" style={{ textAlignVertical: 'center', textAlign: 'center', fontSize:24, width:35, height:35 ,color: MyColors.dashboard_text1  }} />
-                        </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                          <Text style={{ textAlign: 'center', fontSize: this.props.languageControl == 'Tamil - (தமிழ்)' ? 12 : 16, fontWeight: 'bold', color: MyColors.dashboard_text1, justifyContent:'center' }}>{strings('login.total_coupon_scan')}</Text>
-                        </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                          <Text style={{ textAlignVertical: 'center', textAlign: 'center', fontSize: 30, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{this.state.totalCouponsRedeemed}</Text>
-                        </Row>
-                      </Card>
-                    </Col>
-                    {/* <Col>
-                      <Card style={{ flex: 0.5, height: 150, marginRight: 5, padding: 5,  borderWidth:2, overflow:'hidden', backgroundColor: MyColors.dashboard_box2, borderRadius:10, borderColor:MyColors.dashboard_text2}}>
-                      <Row style={{ justifyContent: 'center',alignItems:'center' }}>
-                        <Icon2 type="Ionicons" name="wallet" style={{ textAlignVertical: 'center', textAlign: 'center', fontSize:24, width:35, height:35 ,color: MyColors.dashboard_text2 }} />
-                        </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                          // comment these line <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of stickers scanned"}</Text> 
-                          <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: this.props.languageControl == 'Tamil - (தமிழ்)' ? 12 : 16, color: MyColors.dashboard_text2  }}>{strings('login.total_redemption_amount_till_d')}</Text>
-                        </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                          <Text style={{ textAlign: 'center', textAlignVertical: 'center', fontSize: 30, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{this.state.totalAmountRedeemed}</Text>
-                        </Row>
-                      </Card>
-                    </Col> */}
-                  </Row>
-                  {/* <Row>
-                  <Col>
-                      <Card style={{ flex: 0.5, height: 150, marginRight: 5, padding: 5,  borderWidth:2, overflow:'hidden', backgroundColor: MyColors.dashboard_box3, borderRadius:10, borderColor:MyColors.dashboard_text3 }}>
-                      <Row style={{ justifyContent: 'center',alignItems:'center' }}>
-                        <Icon2 type="Ionicons" name="checkmark" style={{ textAlignVertical: 'center', textAlign: 'center', fontSize:24, width:35, height:35 ,color: MyColors.dashboard_text3 }} />
-                        </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                          // comment these line <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of stickers scanned"}</Text>
-                          <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: this.props.languageControl == 'Tamil - (தமிழ்)' ? 12 : 16, color: MyColors.dashboard_text3 }}>{strings('login.total_redemption_amount_till_date')}</Text>
-                        </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                          <Text style={{ textAlign: 'center', textAlignVertical: 'center', fontSize: 30, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{this.state.totalAmountReceived}</Text>
-                        </Row>
-                      </Card>
-                    </Col>
-                    <Col>
-                      <Card style={{ flex: 0.5, height: 150, marginRight: 5, padding: 5,  borderWidth:2, overflow:'hidden', backgroundColor: MyColors.dashboard_box4, borderRadius:10, borderColor:MyColors.dashboard_text4 }}>
-                      <Row style={{ justifyContent: 'center',alignItems:'center' }}>
-                        <Icon2 type="Ionicons" name="timer" style={{ textAlignVertical: 'center', textAlign: 'center', fontSize:24, width:35, height:35 ,color: MyColors.dashboard_text4  }} />
-                        </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                        // comment these line  <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{"Total value of stickers scanned"}</Text> 
-                          <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: this.props.languageControl == 'Tamil - (தமிழ்)' ? 12 : 16, color: MyColors.dashboard_text4 }}>{strings('login.total_coupons_scanned_for_scheme')}</Text>
-                        </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                          <Text style={{ textAlign: 'center', textAlignVertical: 'center', fontSize: 30, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{this.state.totalAmountPending}</Text>
-                        </Row>
-                      </Card>
-                    </Col>
-                  </Row> */}
-                </Grid>
-                <Text />
-                <View style={{ marginTop: 5, width: 150, justifyContent: 'center', flex: 1, alignSelf: 'center' }}>
-                  {/* <Button onPress={this._onPressScanButton} title="SCAN" /> */}
-                  <Button style={{ justifyContent:'center', alignContent:'center',
-                   backgroundColor: this.state.userType == 2 ? MyColors.dealerColor : MyColors.distributorColor , borderRadius: 20 }} 
-                  onPress={this._onPressScanButton}>
-                    <Text style={{ textAlign: 'center', flex: 1, fontWeight: 'bold', fontSize: 18 }}>{strings('login.scan_button')}</Text>
-                    {/* <Icon2 type="Ionicons" name="qr-code" style={{ textAlign:'center', fontSize:24,paddingRight:10 ,color: MyColors.white }} /> */}
-                    </Button>
-                </View>
                 
-
-        {/* 
-                {this.state.loading ? <View style={{ justifyContent: 'center' }}>
-                  <ActivityIndicator
-                    animating={this.state.loading}
-                    style={styles.activityIndicator}
-                    size="large"
-                  />
-                </View> : <View />} */}
-
-              
-              {/* <View style={{ backgroundColor: '#FF7F50',margin:10, borderWidth:2, borderRadius:10,borderColor:MyColors.dashboard_text2 }}>
-              <Text style={{ textAlign: 'center', flex: 1, fontWeight: 'bold', padding:15,fontSize: 16, color:'white' }}>{strings('login.note')}</Text>
-              </View> */}
-                           
+        
               </ScrollView> 
               </View>
               :

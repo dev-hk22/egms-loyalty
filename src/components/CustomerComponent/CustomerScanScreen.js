@@ -17,13 +17,14 @@ var Sound = require('react-native-sound');
 import ImagePicker from 'react-native-image-picker';
 import MyColors from '../../Utility/Colors';
 import AsyncStorage from '@react-native-community/async-storage';
-import MapView, { Marker } from 'react-native-maps';
+// import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import Colors from '../../Utility/Colors';
 // import ViewShot from "react-native-view-shot";
 
 var redeemMethodsT = [];
 var redeemMethodsP = [];
+var redeemMethodsUs = [];
 class CustomerScanScreen extends Component {
     constructor(props) {
         super(props);
@@ -62,7 +63,12 @@ class CustomerScanScreen extends Component {
             redeemedBy:"",
             userType:'',
             carpenterId:'',
-            currentLocation: {}
+            currentLocation: {},
+            endDate:'',
+            businessName: '',
+            startDate:'',
+            orderID:'',
+            publicScanCount:''
         };
     }
     componentWillMount() { this._getAsyncData(); }
@@ -172,11 +178,11 @@ class CustomerScanScreen extends Component {
             console.log("1");
             const formData = new FormData();
             formData.append('qrText', e.data);
-            formData.append('authUserId', this.state.carpenterId);
+            formData.append('officerUserId', this.state.carpenterId);
             formData.append('redeemType', "0");
             formData.append('latitude' , this.state?.currentLocation?.latitude || 0);
             formData.append('longitude' , this.state?.currentLocation?.longitude || 0);
-            formData.append('userType', this.state.userType);
+            formData.append('userType', 6);
             // if (this.props.languageControl) {
             //     formData.append('language', 'en');
             // } else {
@@ -213,8 +219,10 @@ class CustomerScanScreen extends Component {
                 // utilities.showToastMsg(lResponseData.message);
                 redeemMethodsT = lResponseData.couponData;
                 redeemMethodsP = lResponseData.productData;
+                redeemMethodsUs = lResponseData.manufacturerData;
+                redeemMethodsIs = lResponseData.orderData;
                 // console.log("=========response" , JSON.stringify(lResponseData , null,2))
-                this.setState({isSuccess: true , cashDetails : redeemMethodsT.value, productName : redeemMethodsP.product_name , productDenomination : redeemMethodsP.product_denomination , scanningBody : lResponseData.message})
+                this.setState({isSuccess: true , cashDetails : redeemMethodsT.value, productName : redeemMethodsP.product_name , productDenomination : redeemMethodsP.product_denomination , scanningBody : lResponseData.message, businessName:redeemMethodsUs.full_name , endDate : redeemMethodsT?.end_date, startDate : redeemMethodsT?.start_date, orderID : redeemMethodsIs?.order_id, publicScanCount: lResponseData?.totalPublicScanCount})
                 // this.setState({ redeemMethods: lResponseData.redeemMethodsT, redeemType: redeemMethodsT[0].redeem_type })
                 // for (var i = 0; i < redeemMethodsT.length; i++) {
                 //     if (redeemMethodsT[i].redeem_type == "1") {
@@ -810,13 +818,39 @@ class CustomerScanScreen extends Component {
                 
                 <View style={styles.itemContainer}>
                     <View style={{width : '38%'}}>
-                        <Text style={styles.successItem}>Sticker Denomination</Text>
+                        <Text style={styles.successItem}>Production Date</Text>
                     </View>
                     <View style={{width : '2%'}}>
                         <Text style={styles.successItem}>:</Text>
                     </View>
                     <View style={{width : '57%'}}>
-                        <Text style={styles.successItem}>{this.state.productDenomination}</Text>
+                    <Text style={styles.successItem}>{Moment(this.state.startDate).format('D MMMM YYYY')}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.itemContainer}>
+                    <View style={{width : '38%'}}>
+                        <Text style={styles.successItem}>Expiry Date</Text>
+                    </View>
+                    <View style={{width : '2%'}}>
+                        <Text style={styles.successItem}>:</Text>
+                    </View>
+                    <View style={{width : '57%'}}>
+                        <Text style={styles.successItem}>{Moment(this.state.endDate).format('D MMMM YYYY')}</Text>
+                    </View>
+                </View>
+
+                <View style={{width : '100%' , height : 0.5 , backgroundColor : 'lightgray' ,marginVertical : 10}}></View>
+                
+                <View style={styles.itemContainer}>
+                    <View style={{width : '38%'}}>
+                        <Text style={styles.successItem}>Manufacturer</Text>
+                    </View>
+                    <View style={{width : '2%'}}>
+                        <Text style={styles.successItem}>:</Text>
+                    </View>
+                    <View style={{width : '57%'}}>
+                        <Text style={styles.successItem}>{this.state.businessName}</Text>
                     </View>
                 </View>
 
@@ -831,6 +865,32 @@ class CustomerScanScreen extends Component {
                         <Text style={styles.successItem}>{this.state.userMobile}</Text>
                     </View>
                 </View>
+
+                <View style={styles.itemContainer}>
+                    <View style={{width : '38%'}}>
+                        <Text style={styles.successItem}>Order ID</Text>
+                    </View>
+                    <View style={{width : '2%'}}>
+                        <Text style={styles.successItem}>:</Text>
+                    </View>
+                    <View style={{width : '57%'}}>
+                        <Text style={styles.successItem}>{this.state.orderID}</Text>
+                    </View>
+                </View>
+
+
+                <View style={styles.itemContainer}>
+                    <View style={{width : '38%'}}>
+                        <Text style={styles.successItem}>Public Verifiers Scan Count </Text>
+                    </View>
+                    <View style={{width : '2%'}}>
+                        <Text style={styles.successItem}>:</Text>
+                    </View>
+                    <View style={{width : '57%'}}>
+                        <Text style={styles.successItem}>{this.state.publicScanCount}</Text>
+                    </View>
+                </View>
+ 
                 {/* <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{`Sticker Denomination : ${this.state.productDenomination}`}</Text>
                 <Text style={{ color: 'white', fontSize: 17, marginVertical: 10 , marginLeft : 20}}>{`Mobile No. : ${this.state.userMobile}`}</Text> */}
                 
@@ -862,7 +922,7 @@ class CustomerScanScreen extends Component {
                 
 
                 <View style={{width : '100%' , height : 0.5 , backgroundColor : 'lightgray' ,marginVertical : 10}}></View>
-                <MapView  
+                {/* <MapView  
                     style={styles.mapStyle}  
                     showsUserLocation={false}  
                     zoomEnabled={true}  
@@ -879,7 +939,7 @@ class CustomerScanScreen extends Component {
                         title={""}  
                         description={""}  
                     />  
-                </MapView> 
+                </MapView>  */}
                 <View 
                     style={{
                         flexDirection : 'row',

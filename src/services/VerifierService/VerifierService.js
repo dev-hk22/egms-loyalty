@@ -16,6 +16,9 @@ class VerifierService{
 	async scanByPublicUser(pFormData){
 		 ;
 		var lUrl = URL + 'scan_arr.php'; 
+
+		console.log('Verifier Scan API URL: ' + lUrl);
+		console.log('Verifier Scan API Request: ' + JSON.stringify(pFormData));
 		await fetch(lUrl, {
   			method: 'POST',
 		  	headers: HEADER,

@@ -223,17 +223,18 @@ class CustomerLoginScreen extends Component { //carpenter login screen
   async callForAPI() {
 
     console.log("calling login");
-    let lMobileNumber = this.state.mobileNumber;
+    let lEmail = this.state.officerid;
     // alert(this.state.mobileNumber);
     this.setState({ loading: true })
     const formData = new FormData();
     console.log(formData);
     // formData.append('mobileNo', lMobileNumber);
-    formData.append('mobileNo', lMobileNumber);
+    formData.append('officerid', lEmail);
     formData.append('password', this.state.password);
     formData.append('deviceToken', app.FCMTOKEN);
     formData.append('deviceType', Platform.OS);
     formData.append('language', "en");
+    formData.append('appVersion', "1");
 
     var loginApiObj = new LoginService();
 
@@ -256,6 +257,7 @@ class CustomerLoginScreen extends Component { //carpenter login screen
       this.closeActivityIndicator();
       utilities.showToastMsg(lResponseData.message);
     } else if (lResponseData.status == 403) {
+      console.log("this is my respomse " + lResponseData)
       utilities.showToastMsg(lResponseData.message);
       this.props.navigation.navigate('CustomerLoginScreen');
       AsyncStorage.clear();
@@ -279,9 +281,9 @@ class CustomerLoginScreen extends Component { //carpenter login screen
       // AsyncStorage.setItem('ACCESSTOKEN', lResponseData.data.accesstoken);
       try {
         this.setState({ password :''})
-        this.props.navigation.navigate('CustomerHomeScreen', { mobileNumber: lMobileNumber});
+        this.props.navigation.navigate('CustomerHomeScreen', { email: lEmail});
       } catch (error) {
-        console.log(error);
+        console.log("This After login" + error)
       }
     } else {
       this.closeActivityIndicator();
@@ -312,7 +314,7 @@ class CustomerLoginScreen extends Component { //carpenter login screen
 
     this.setState({ loading: true });
 
-    var lUrl = URL + 'forgotPasswordCarpenter';
+    var lUrl = URL + 'resetPasswordOfficerUser';
     console.log(lUrl);
     await fetch(lUrl, {
       method: 'POST',
@@ -386,11 +388,11 @@ class CustomerLoginScreen extends Component { //carpenter login screen
     // alert(JSON.stringify(resForOtp))
   }
   async _onPressButton() {
-    let lMobileNumber = this.state.mobileNumber;
+    let lMobileNumber = this.state.officerid;
     var isValidMobileNumber = '';
     
     if (lMobileNumber == '') {
-      utilities.showToastMsg('Enter registered mobile number');
+      utilities.showToastMsg('Enter registered Email Id');
       return;
     }
     else if(this.state.password == '')
@@ -496,19 +498,18 @@ class CustomerLoginScreen extends Component { //carpenter login screen
                 <View style={{ paddingLeft: 0, paddingRight: 0, marginTop: 10 ,}}>
                 <View style={{ flexDirection: "row", flex: 1, alignItems: "center", ...styles.inputs}}>
               
-                  <Icon onPress={() => this.setState({ showPW: !this.state.showPW })} type="FontAwesome" name="phone" style={{  fontSize: 18, color: MyColors.dealerColor, }} />
+                  <Icon onPress={() => this.setState({ showPW: !this.state.showPW })} type="FontAwesome" name="user" style={{  fontSize: 18, color: MyColors.dealerColor, }} />
                         
                     <TextInput
                   
                       style ={{ marginLeft:5}}
-                      value={this.state.mobileNumber}
+                      value={this.state.officerid}
                       // maxLength={10}
-                      keyboardType="number-pad"
-                      placeholder={strings('login.paymentOptions_screen_placeholder_mobileno')}
+                      placeholder={strings('login.customer_id')}
                       placeholderTextColor={ MyColors.greyColor}
                       onFocus={() => { this.setState({ borderBottomColorUserName: '#50CAD0' }) }}
                       onBlur={() => { this.setState({ borderBottomColorUserName: '#757575' }); }}
-                      onChangeText={(mobileNumber) => this.setState({ mobileNumber })}
+                      onChangeText={(officerid) => this.setState({ officerid })}
                     />
                  
                   </View>
@@ -550,8 +551,8 @@ class CustomerLoginScreen extends Component { //carpenter login screen
                       </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("CustomerSignUpScreen")}>
-                        <Text style={{ color: MyColors.distributorColor , marginTop: 20, fontSize: 16, textAlign: "center", textDecorationLine: 'underline' }}>{strings('login.new_user')}</Text>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("MainScreen")}>
+                        <Text style={{ color: MyColors.distributorColor , marginTop: 20, fontSize: 16, textAlign: "center", textDecorationLine: 'underline' }}>{strings('login.back_mainscreen')}</Text>
                     </TouchableOpacity>
 
                     <Modal isVisible={this.state.isForgot}>

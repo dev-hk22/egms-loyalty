@@ -582,6 +582,8 @@ class SideMenu extends Component {
     console.log("usertype", this.state.userType);
     console.log("isLoaded", this.state.isLoaded);
 
+    console.log("menuList", this.state.menuList);
+
     return (
       
       <View style={{ backgroundColor: this.props.enableDarkTheme ? '#1a1a1a' : 'white', flex: 1, borderColor: this.props.enableDarkTheme ? 'gray' : 'black', borderWidth: 1, borderTopWidth: 0, opacity: 1 }}>

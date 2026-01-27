@@ -8,7 +8,8 @@ import * as utilities from '../../Utility/utilities';
 import { strings } from '../../locales/i18n';
 import { connect } from 'react-redux';
 import MyColors from '../../Utility/Colors';
-import Tab1 from '../History/Tab1';
+import Moment from 'moment';
+import Tab3 from '../History/Tab3';
 import { APIKEY, URL } from '../../App';
 
 class CustomerOrderHistoryScreen extends React.Component {
@@ -68,10 +69,20 @@ class CustomerOrderHistoryScreen extends React.Component {
 	callApi = () => {
 		this.setState({ loading: true })
 		const formData = new FormData();
+		const currentDate = Moment().format('DD-MM-YYYY'); // You can change the format as needed
+		formData.append('officerId', this.state.userId);
+		formData.append('fromDate', currentDate);
+		formData.append('toDate', currentDate);
+		formData.append('redeemType', 0);
+		formData.append('userType', 6);
+		formData.append('language', "en");
+		formData.append('offset', 0);
 
-		formData.append('authUserId', this.state.userId);
+		console.log(formData)
+		console.log(this.state.accesstoken);
+		console.log(APIKEY);
 
-		var lUrl = URL + 'getOrders';
+		var lUrl = URL + 'getRedeemHistoryOfficer';
 		fetch(lUrl, {
 			method: 'POST',
 			headers: {
@@ -85,7 +96,7 @@ class CustomerOrderHistoryScreen extends React.Component {
 		.then((response) => response.json())
 		.then((responseJson) => {
 			console.log(JSON.stringify(responseJson,null,2));
-			this.setState({orderHistory : responseJson.orderData, loading: false })
+			this.setState({redeemHistory : responseJson.redeemHistory, loading: false })
 		})
 		.catch((error) => {
 			this.setState({ loading: false })
@@ -123,7 +134,7 @@ class CustomerOrderHistoryScreen extends React.Component {
 						</TouchableOpacity>
 					</Left>
 					<Body style={{ flex: 0.6, alignItems: 'center' }}>
-						<Title style={{ textAlign: 'center', color: '#FFFFFF' }}>{strings('login.sidemenu_orderhistory')}</Title>
+						<Title style={{ textAlign: 'center', color: '#FFFFFF' }}>{strings('login.sidemenu_couponhistory')}</Title>
 					</Body>
 					<Right style={{ flex: 0.2 }}>
 					</Right>
@@ -138,7 +149,7 @@ class CustomerOrderHistoryScreen extends React.Component {
 						</TouchableOpacity>
 					</Left>
 					<Body style={{ flex: 0.6, alignItems: 'center' }}>
-						<Title style={{ color: '#FFFFFF', fontSize: 16 }}>{strings('login.sidemenu_orderhistory')}</Title>
+						<Title style={{ color: '#FFFFFF', fontSize: 16 }}>{strings('login.sidemenu_couponhistory')}</Title>
 					</Body>
 					<Right style={{ flex: 0.2 }}>
 
@@ -165,7 +176,7 @@ class CustomerOrderHistoryScreen extends React.Component {
 
 
 	_displayList() {
-		if (this.state.orderHistory.length == 0) {
+		if (this.state.redeemHistory == []) {
 			return (
 				<View style={styles.noRecord}>
 					<Text style={{ fontSize: 28, color: this.props.enableDarkTheme ? 'white' : '#BDBDBD' }}>{strings('login.NoHistory_Error')}</Text>
@@ -175,32 +186,23 @@ class CustomerOrderHistoryScreen extends React.Component {
 			return (
 				<View style={{ flex: 1, backgroundColor: this.props.enableDarkTheme ? '#1a1a1a' : 'white' }}>
 					<FlatList
-						data={this.state.orderHistory}
+						data={this.state.redeemHistory}
 						extraData={this.state}
 						renderItem={({ item, index }) => (
-							<ListItem onPress={()=>{this.props.navigation.navigate('OrderDetailsScreen',{"data": item})}} key={index} style={{ flexDirection: 'column', alignItems: 'flex-start', }}>
+							<ListItem onPress={()=>{}} key={index} style={{ flexDirection: 'column', alignItems: 'flex-start', }}>
 								<View style={{ flex: 1, flexDirection: 'row', }}>
 									<View style={{ flex: 0.8, flexDirection: 'row'}} >
 										{/* <Text style={{ alignSelf: 'flex-start', fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{strings('login.orderId')}: {item?.order_id}</Text> */}
-										<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black', paddingRight: 3,  fontWeight : '700'}}>{strings('login.orderId')}:</Text>
-										<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{item?.order_id}</Text>
+										<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black', paddingRight: 3,  fontWeight : '700'}}>{strings('login.serial_No')}:</Text>
+										<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{item?.serial_no_print}</Text>
 									</View>
-									<View style={{ flex: 0.2, flexDirection: 'row' }}>
-										<Text style={{ fontSize: 14, color: 'green' }}>{item?.order_amount} </Text>
-										<Text style={{ fontSize: 14, color: 'green', paddingRight: 3,  }}>KSh</Text>
-									</View>
+									
 								</View>
 								<View style={{ flex: 1,marginVertical : 10 ,flexDirection: 'row'}} >
-									<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black', paddingRight: 3,  fontWeight : '700'}}>{strings('login.orderdate')}:</Text>
-									<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{item?.created}</Text>
+									<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black', paddingRight: 3,  fontWeight : '700'}}>Verified At:</Text>
+									<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{Moment(item?.created_date).format('D MMMM YYYY h:mm A')}</Text>
 								</View>
-								{/* <View style={{ flex: 1, }} >
-									<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black' }}>{strings('login.batch_no')} : gjdigjithjtihj</Text>
-								</View> */}
-								<View style={{ flex: 1,flexDirection: 'row' }}>
-									<Text style={{ fontSize: 14, color: this.props.enableDarkTheme ? 'white' : 'black', paddingRight: 3,  fontWeight : '700'}}>{strings('login.status')}:</Text>
-									<Text style={{ fontSize: 14, color:'green' }}>{item?.order_status}</Text>
-								</View>
+								
 							</ListItem>
 						)}
 						keyExtractor={(item, index) => index.toString()}
@@ -227,14 +229,14 @@ class CustomerOrderHistoryScreen extends React.Component {
 				/>
 				{/* <Tabs> */}
 					{/* <Tab heading={strings('login.coupon_history_cash')} tabStyle={{ backgroundColor: this.props.enableDarkTheme ? 'black' : 'blue' }} textStyle={{ color: '#fff' }} activeTabStyle={{ backgroundColor: this.props.enableDarkTheme ? '#1a1a1a' : 'blue' }} activeTextStyle={{ color: '#fff', fontWeight: 'normal' }}> */}
-						{/* <Tab1 props={this.props} redeemCash={this.state.redeemHistoryCash} /> */}
+						<Tab3 props={this.props} redeemCash={this.state.redeemHistoryCash} />
 					{/* </Tab> */}
 
 					{/* <Tab heading={strings('login.coupon_history_scheme')} tabStyle={{ backgroundColor: this.props.enableDarkTheme ? 'black' : 'blue' }} textStyle={{ color: '#fff' }} activeTabStyle={{ backgroundColor: this.props.enableDarkTheme ? '#1a1a1a' : 'blue' }} activeTextStyle={{ color: '#fff', fontWeight: 'normal' }}>
 						<Tab2 props={this.props} redeemScheme={this.state.redeemHistoryScheme} />
 					</Tab> */}
 				{/* </Tabs> */}
-				{this._displayList()}
+				{/* {this._displayList()} */}
 			</View>
 		)
 	}

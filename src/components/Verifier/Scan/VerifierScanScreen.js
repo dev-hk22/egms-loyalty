@@ -111,7 +111,7 @@ class VerifierScanScreen extends React.Component {
 		var lResponseData = verifierApiObj.getRespData();
 		//  ;
 		this.closeActivityIndicator();
-		// console.log(lResponseData);
+		console.log(lResponseData);
 
 		if (!lResponseData) {
 			utilities.showToastMsg('Something went wrong. Please try again later');

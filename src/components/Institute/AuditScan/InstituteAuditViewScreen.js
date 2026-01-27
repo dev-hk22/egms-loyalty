@@ -3,7 +3,7 @@ import { Alert, StatusBar, AsyncStorage, BackHandler, Dimensions, Platform, Styl
 import { Container, Header, Left, Body, Right, Content, Card, CardItem, Text, Title, Item, Icon, Toast, List, ListItem } from 'native-base';
 // import QRCodeScanner from 'react-native-qrcode-scanner';
 import VerifierService from '../../../services/VerifierService/VerifierService';
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 
 import Loader from '../../../Utility/Loader';
 import * as utilities from '../../../Utility/utilities';

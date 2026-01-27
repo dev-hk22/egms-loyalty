@@ -11,7 +11,7 @@ import { strings } from '../../locales/i18n';
 import { connect } from 'react-redux';
 import MyColors from '../../Utility/Colors';
 import AsyncStorage from '@react-native-community/async-storage';
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 
 export class TutorialScreen extends Component {
 
@@ -118,7 +118,7 @@ export class TutorialScreen extends Component {
 								<Text style={{ fontSize: 28, color: '#BDBDBD' }}>{strings('login.NotificationScreen_Error')}</Text>
 							</View> */}
 							 <ScrollView >
-                                <Pdf
+                                {/* <Pdf
 									source={ source }
 									onLoadComplete={(numberOfPages, filePath) => {
 										console.log(`number of pages: ${numberOfPages}`);
@@ -129,7 +129,7 @@ export class TutorialScreen extends Component {
 									onError={(error) => {
 										console.log(error);
 									}}
-									style={styles.pdf} />
+									style={styles.pdf} /> */}
                     </ScrollView>
 					
 					

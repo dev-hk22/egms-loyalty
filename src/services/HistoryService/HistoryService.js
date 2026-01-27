@@ -15,6 +15,12 @@ class HistoryService{
 
 
 	async getRedeemHistory(pFormData,accesstoken){
+
+		console.log("getRedeemHistory called");
+
+		console.log("getRedeemHistory params",pFormData);
+
+		console.log("accesstoken",accesstoken);
 		var lUrl = URL + 'getRedeemHistory'; 
 		await fetch(lUrl, { 
   			method: 'POST',

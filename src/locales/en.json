@@ -2,7 +2,9 @@
     "login": {
         "login_button": "Login",
         "public_login": "Public Login",
-        "customer_login": "Customer Login",
+        "customer_login": "Officer Login",
+        "back_mainscreen":"Back to Main Screen",
+        "customer_id":"Enter ID",
         "signup_button": "Sign Up",
         "scan_button": "SCAN",
         "dashboard_title": "DASHBOARD",

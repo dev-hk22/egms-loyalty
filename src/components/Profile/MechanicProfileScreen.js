@@ -8,7 +8,7 @@ import ProfileService from '../../services/ProfileService/ProfileService';
 import Loader from '../../Utility/Loader';
 import * as utilities from '../../Utility/utilities';
 import * as app from '../../App';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 var _ = require('lodash');
 import { strings } from '../../locales/i18n';
 import { connect } from 'react-redux';

@@ -82,13 +82,15 @@ class ProfileService {
 	};
 
 	async getCustomerProfile(pFormData, accesstoken) {
+		console.log(pFormData);
+		console.log(accesstoken);
 		console.log("-----------"+JSON.stringify({
 			'Accept': 'application\/json',
 			'Content-Type': 'multipart\/form-data',
 			'apikey': APIKEY,
 			'accesstoken': accesstoken
 		} , null,2));
-		var lUrl = URL + 'getAuthUserProfile';
+		var lUrl = URL + 'getOfficerUserProfile';
 		await fetch(lUrl, {
 			method: 'POST',
 			headers: {
@@ -111,7 +113,7 @@ class ProfileService {
 	};
 
 	async updateProfileCustomer(pFormData,accesstoken) {
-		var lUrl = URL + 'updateAuthUserProfile';
+		var lUrl = URL + 'updateOfficerUserProfile';
 		await fetch(lUrl, {
 			method: 'POST',
 			headers: {

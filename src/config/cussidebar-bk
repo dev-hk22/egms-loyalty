@@ -58,7 +58,7 @@ var languageDropDown = [{
 ];
 class CustSideMenu extends Component {
   constructor(props) {
-   // console.log("CustSideMenu props",props);
+   // console.log("sidemenu props",props);
     super(props);
     this.officerUserId;
     this.state = {
@@ -157,21 +157,21 @@ class CustSideMenu extends Component {
       var at = result[2][1];
       this.setState({ accesstoken : at});
       if (lData) {
-        console.log("CustSideMenu data",lData);
+        console.log("sidemenu data",lData);
 
          this.setState({
-          name: lData.data.full_name ? lData.data.full_name : lData.data.shop_name, imageURL: lData.data.brand_logo, userType: lData.data.userType,
+          name: lData.data.company_name ? lData.data.company_name : lData.data.shop_name, imageURL: lData.data.brand_logo, userType: lData.data.userType,
            menuList: [
             { title: strings('login.profile'), 
             nav1: 'CustomerProfileScreen' },
-            // { title: strings('login.CustSideMenu_paymentoptions'), nav1: 'PaymentDetailsScreen' },
+            // { title: strings('login.sidemenu_paymentoptions'), nav1: 'PaymentDetailsScreen' },
             { title: strings('login.sdemenu_scan'), nav1: 'CustomerScanScreen' },
-            // { title: strings('login.sidemenu_couponhistory'), nav1: 'CustomerOrderHistoryScreen' } ,
-            { title: strings('login.sidemenu_couponhistory'), nav1: 'CustomerOrderHistoryScreen' },
-
+            // { title: strings('login.sidemenu_couponhistory'), nav1: 'HistoryScreen' },
             //  { title: strings('login.cashbash'), nav1: 'CashBatchesScreen' } ,
-          //  { title: strings('login.CustSideMenu_report'), nav1: 'ReportScreen' } ,
-            // { title: strings('login.CustSideMenu_reporthistory'), nav1: 'ReportHistory' } ,
+            { title: strings('login.sidemenu_makeorder'), nav1: 'OrderMasterScreen' } ,
+            { title: strings('login.sidemenu_orderhistory'), nav1: 'CustomerOrderHistoryScreen' } ,
+          // { title: strings('login.sidemenu_report'), nav1: 'ReportScreen' } ,
+            // { title: strings('login.sidemenu_reporthistory'), nav1: 'ReportHistory' } ,
            
             // lData.data.userType == 0 ? {} : lData.data.userType == 2 ? {} : { title: strings('login.passBook'), nav1: 'PassbookScreen' },
             // lData.data.userType == 0 ? {} : lData.data.userType == 2 ? {} : { title: strings('login.Products'), nav1: 'GiftProductsScreen' },
@@ -184,7 +184,7 @@ class CustSideMenu extends Component {
         });
         this.setState({ isLoaded: true });
         this.officerUserId = lData.data.id;
-        console.log("CustSideMenu usertype", this.state.userType);
+        console.log("sidemenu usertype", this.state.userType);
       }
     });
   }
@@ -193,9 +193,9 @@ class CustSideMenu extends Component {
     console.log("=======logout")
     this.setState({ loading: true });
     const formData = new FormData();
-    formData.append('officerUserId', this.officerUserId);
+    formData.append('authUserId', this.officerUserId);
     formData.append('deviceToken', FCMTOKEN);
-    formData.append('userType', 6);
+    formData.append('userType', this.state.userType);
     if (this.props.languageControl) {
       formData.append('language', 'en');
     } else {
@@ -249,6 +249,7 @@ class CustSideMenu extends Component {
   }
 
   _renderHeader(item, expanded) {
+    // console.log("=====header " , JSON.stringify(item , null,2))
     if (item.title == 'LOGOUT' || item.title == 'लॉग आउट' || item.title == 'প্রস্থান' || item.title == 'લૉગ આઉટ' || item.title == 'ಲಾಗ್ ಔಟ್' || item.title == 'बाहेर पडणे' || item.title == 'ପ୍ରସ୍ଥାନ କର' || item.title == 'ਲਾੱਗ ਆਊਟ' || item.title == 'வெளியேறு' || item.title == 'లాగ్అవుట్' || item.title == 'لاگ آوٹ' || item.title == 'Déconnecter' || item.title == 'Njia kutoka') {
       return (
         <TouchableOpacity onPress={() => { this._logOut() }}>
@@ -262,7 +263,7 @@ class CustSideMenu extends Component {
           <View style={{
             flexDirection: "row",
             padding: 10,
-            borderBottomWidth: 0.5,
+            borderBottomWidth: 1,
             borderTopWidth: 1,
             borderBottomColor: MyColors.distributorColor,
             borderTopColor: MyColors.distributorColor,
@@ -287,7 +288,9 @@ class CustSideMenu extends Component {
       item.title == 'PASSBOOK' || item.title == 'पासवृक' || item.title == 'PASSBOOK' || item.title == 'পাসবুক' || item.title == 'પાસબુક' || item.title == 'ಪಾಸ್‌ಬುಕ್' || item.title == 'पासबुक' || item.title == 'ପାସ୍ବୁକ୍ |' || item.title == 'ਪਾਸਬੁਕ' || item.title == 'பாஸ்புக்' || item.title == 'లావాదేవీల' || item.title == 'پاس بک' || item.title == 'PISANI' ||
       item.title == 'PRODUCTS' || item.title == 'उत्पादों' || item.title == 'DES PRODUITS' || item.title == 'পণ্য' || item.title == 'પ્રૉડક્ટ્સ' || item.title == 'ಪ್ರಾಡಕ್ಟ್ಸ್' || item.title == 'प्रॉडक्ट्स' || item.title == 'ଉତ୍ପାଦଗୁଡିକ' || item.title == 'ਪ੍ਰਾਡਕ੍ਟ੍ਸ' || item.title == 'தயாரிப்புகள்' || item.title == 'ఉత్పత్తులు' || item.title == 'مصنوعات' || item.title == 'Bidhaa' ||
       item.title == 'REPORT HISTORY' || item.title == 'रिपोर्ट इतिहास' || item.title == 'Historique du rapport' || item.title == 'ইতিহাসের প্রতিবেদন করুন' || item.title == 'ઇતિહાસની જાણ કરો' || item.title == 'ಇತಿಹಾಸವನ್ನು ವರದಿ ಮಾಡಿ' || item.title == 'इतिहास नोंदवा' || item.title == 'ରିପୋର୍ଟ ଇତିହାସ' || item.title == 'ਇਤਿਹਾਸ ਦੀ ਰਿਪੋਰਟ ਕਰੋ' || item.title == 'வரலாற்றைப் புகாரளிக்கவும்' || item.title == 'చరిత్రను నివేదించండి' || item.title == 'تاریخ(ہسٹری ) کی اطلاع دیں' || item.title == 'Ripoti ya historia' ||
-      item.title == 'PRODUCTS HISTORY' || item.title == 'उत्पाद इतिहास' || item.title == 'HISTOIRE DES PRODUITS' || item.title == 'পণ্য ইতিহাস' || item.title == 'પ્રૉડક્ટ્સ હિસ્ટરી' || item.title == 'ಪ್ರಾಡಕ್ಟ್ಸ್ ಹಿಸ್ಟರೀ' || item.title == 'प्रॉडक्ट्स हिस्टरी' || item.title == 'ଉତ୍ପାଦ ଇତିହାସ |' || item.title == 'ਪ੍ਰਾਡਕ੍ਟ੍ਸ ਹਿਸ੍ਟਰੀ' || item.title == 'தயாரிப்புகள் வரலாறு' || item.title == 'ఉత్పత్తుల చరిత్ర' || item.title == 'مصنوعات کی تاریخ' || item.title == 'Historia ya Bidhaa'
+      item.title == 'PRODUCTS HISTORY' || item.title == 'उत्पाद इतिहास' || item.title == 'HISTOIRE DES PRODUITS' || item.title == 'পণ্য ইতিহাস' || item.title == 'પ્રૉડક્ટ્સ હિસ્ટરી' || item.title == 'ಪ್ರಾಡಕ್ಟ್ಸ್ ಹಿಸ್ಟರೀ' || item.title == 'प्रॉडक्ट्स हिस्टरी' || item.title == 'ଉତ୍ପାଦ ଇତିହାସ |' || item.title == 'ਪ੍ਰਾਡਕ੍ਟ੍ਸ ਹਿਸ੍ਟਰੀ' || item.title == 'தயாரிப்புகள் வரலாறு' || item.title == 'ఉత్పత్తుల చరిత్ర' || item.title == 'مصنوعات کی تاریخ' || item.title == 'Historia ya Bidhaa' ||
+      item.title == 'ORDER' || item.title == 'ऑर्डर' || item.title == 'ORDER' || item.title == 'অর্ডার' || item.title == 'ઓર્ડર' || item.title == 'ಆರ್ಡರ್' || item.title == 'ऑर्डर' || item.title == 'ଆର୍ଡର' || item.title == 'ਆਰਡਰ' || item.title == 'ஆர்டர்' || item.title == 'ఆర్డర్' || item.title == 'آرڈر' || item.title == 'AGIZO' ||
+      item.title == 'ORDER HISTORY' || item.title == 'आदेश इतिहास' || item.title == 'HISTORIQUE DES COMMANDES' || item.title == 'অর্ডার ইতিহাস' || item.title == 'ઓર્ડર ઇતિહાસ' || item.title == 'ಆರ್ಡರ್ ಇತಿಹಾಸ' || item.title == 'ऑर्डर इतिहास' || item.title == 'ଆର୍ଡର ଇତିହାସ' || item.title == 'ਆਰਡਰ ਇਤਿਹਾਸ' || item.title == 'ஆர்டர் வரலாறு' || item.title == 'ఆర్డర్ చరిత్ర' || item.title == 'آرڈر کی تاریخ' || item.title == 'HISTORIA YA AGIZO'
       // item.title == 'DEALERS' || item.title == 'डीलरों' || item.title == 'ব্যবসায়ীরা' || item.title == 'Concessionnaires' || item.title == 'વેપારીઓ' || item.title == 'ವಿತರಕರು' || item.title == 'विक्रेते' || item.title == 'ଡିଲରମାନେ' || item.title == 'ਡੀਲਰ' || item.title == 'Återförsäljare' || item.title == 'விநியோகஸ்தர்கள்' || item.title == 'డీలర్లు' || item.title == 'ڈیلر'
     ) {
       return (
@@ -336,10 +339,13 @@ class CustSideMenu extends Component {
                                 item.title == 'PRODUCTS HISTORY' || item.title == 'उत्पाद इतिहास' || item.title == 'HISTOIRE DES PRODUITS' || item.title == 'পণ্য ইতিহাস' || item.title == 'પ્રૉડક્ટ્સ હિસ્ટરી' || item.title == 'ಪ್ರಾಡಕ್ಟ್ಸ್ ಹಿಸ್ಟರೀ' || item.title == 'प्रॉडक्ट्स हिस्टरी' || item.title == 'ଉତ୍ପାଦ ଇତିହାସ |' || item.title == 'ਪ੍ਰਾਡਕ੍ਟ੍ਸ ਹਿਸ੍ਟਰੀ' || item.title == 'தயாரிப்புகள் வரலாறு' || item.title == 'ఉత్పత్తుల చరిత్ర' || item.title == 'مصنوعات کی تاریخ' || item.title == 'Historia ya Bidhaa' ?
                                   <Icon type="FontAwesome" name="history" style={{ fontSize: 18, color: this.props.enableDarkTheme ? 'white' : 'black' }} />
                                   :
-                                  // item.title == 'DEALERS' || item.title == 'डीलरों' || item.title == 'ব্যবসায়ীরা' || item.title == 'Concessionnaires' || item.title == 'વેપારીઓ' || item.title == 'ವಿತರಕರು' || item.title == 'विक्रेते' || item.title == 'ଡିଲରମାନେ' || item.title == 'ਡੀਲਰ' || item.title == 'Återförsäljare' || item.title == 'விநியோகஸ்தர்கள்' || item.title == 'డీలర్లు' || item.title == 'ڈیلر' ?
-                                  //   <Icon type="FontAwesome5" name="user-plus" style={{ fontSize: 18, color: this.props.enableDarkTheme ? 'white' : 'black' }} />
-                                  //   :
-                                    <Icon type="FontAwesome" name="ban" style={{ fontSize: 18, color: this.props.enableDarkTheme ? 'white' : 'black' }} />
+                                  item.title == 'ORDER' || item.title == 'ऑर्डर' || item.title == 'ORDER' || item.title == 'অর্ডার' || item.title == 'ઓર્ડર' || item.title == 'ಆರ್ಡರ್' || item.title == 'ऑर्डर' || item.title == 'ଆର୍ଡର' || item.title == 'ਆਰਡਰ' || item.title == 'ஆர்டர்' || item.title == 'ఆర్డర్' || item.title == 'آرڈر' || item.title == 'AGIZO' ?
+                                    <Icon type="FontAwesome5" name="store" style={{ fontSize: 18, color: this.props.enableDarkTheme ? 'white' : 'black' }} />
+                                    :
+                                    item.title == 'ORDER HISTORY' || item.title == 'आदेश इतिहास' || item.title == 'HISTORIQUE DES COMMANDES' || item.title == 'অর্ডার ইতিহাস' || item.title == 'ઓર્ડર ઇતિહાસ' || item.title == 'ಆರ್ಡರ್ ಇತಿಹಾಸ' || item.title == 'ऑर्डर इतिहास' || item.title == 'ଆର୍ଡର ଇତିହାସ' || item.title == 'ਆਰਡਰ ਇਤਿਹਾਸ' || item.title == 'ஆர்டர் வரலாறு' || item.title == 'ఆర్డర్ చరిత్ర' || item.title == 'آرڈر کی تاریخ' || item.title == 'HISTORIA YA AGIZO' ?
+                                      <Icon type="FontAwesome" name="history" style={{ fontSize: 18, color: this.props.enableDarkTheme ? 'white' : 'black' }} />
+                                      :
+                                      <Icon type="FontAwesome" name="ban" style={{ fontSize: 18, color: this.props.enableDarkTheme ? 'white' : 'black' }} />
               }
               {"   "}{item.title}
             </Text>
@@ -403,23 +409,25 @@ class CustSideMenu extends Component {
     this.setState({
       menuList: [
         // { title: strings('login.profile'), nav1: this.state.userType == 0 ? 'ProfileScreen' : 'MechanicProfileScreen' },
-        // { title: strings('login.sdemenu_scan'), nav1: 'ScanScreen' },
-        // { title: strings('login.CustSideMenu_couponhistory'), nav1: 'HistoryScreen' },
-        // this.state.userType == 0 ? { title: strings('login.CustSideMenu_report'), nav1: 'ReportScreen' } : {},
-        // this.state.userType == 0 ? { title: strings('login.CustSideMenu_reporthistory'), nav1: 'ReportHistory' } : {},
-        // this.state.userType == 0 ? {} : { title: strings('login.CustSideMenu_paymentoptions'), nav1: 'PaymentDetailsScreen' },
+        // { title: strings('login.sdemenu_scan'), nav1: 'CustomerScanScreen' },
+        // { title: strings('login.sidemenu_couponhistory'), nav1: 'HistoryScreen' },
+        // this.state.userType == 0 ? { title: strings('login.sidemenu_report'), nav1: 'ReportScreen' } : {},
+        // this.state.userType == 0 ? { title: strings('login.sidemenu_reporthistory'), nav1: 'ReportHistory' } : {},
+        // this.state.userType == 0 ? {} : { title: strings('login.sidemenu_paymentoptions'), nav1: 'PaymentDetailsScreen' },
         // this.state.userType == 0 ? {} : { title: strings('login.passBook'), nav1: 'PassbookScreen' },
         // this.state.userType == 0 ? {} : { title: strings('login.Products'), nav1: 'GiftProductsScreen' },
         // this.state.userType == 0 ? {} : { title: strings('login.productsHistory'), nav1: 'ProductsHistoryScreen' },
         // { title: strings('login.logout') },
         // { title: "LANGUAGE" },
-        { title: strings('login.profile'), nav1: this.state.userType == 0 ? 'ProfileScreen' : this.state.userType == 2 ? "DealerProfileScreen" : 'MechanicProfileScreen' },
-        // this.state.userType == 4 ?  { title: strings('login.CustSideMenu_paymentoptions'), nav1: 'PaymentDetailsScreen' } : {},
-        this.state.userType == 2 ? { title: strings('login.sdemenu_scan'), nav1: 'DealerScanScreen' } : { title: strings('login.sdemenu_scan'), nav1: 'ScanScreen' },
-        this.state.userType == 2 ? { title: strings('login.CustSideMenu_couponhistory'), nav1: 'DealerHistoryScreen' } : { title: strings('login.CustSideMenu_couponhistory'), nav1: 'HistoryScreen' },
+        { title: strings('login.profile'), nav1:  "CustomerProfileScreen" },
+        // this.state.userType == 4 ?  { title: strings('login.sidemenu_paymentoptions'), nav1: 'PaymentDetailsScreen' } : {},
+        this.state.userType == 2 ? { title: strings('login.sdemenu_scan'), nav1: 'DealerScanScreen' } : { title: strings('login.sdemenu_scan'), nav1: 'CustomerScanScreen' },
+        this.state.userType == 2 ? { title: strings('login.sidemenu_couponhistory'), nav1: 'DealerHistoryScreen' } : { title: strings('login.sidemenu_couponhistory'), nav1: 'HistoryScreen' },
         // this.state.userType == 4 ? { title: strings('login.cashbash'), nav1: 'CashBatchesScreen' } : {},
-        this.state.userType == 4 ? { title: strings('login.CustSideMenu_report'), nav1: 'ReportScreen' } : {},
-        this.state.userType == 4 ? { title: strings('login.CustSideMenu_reporthistory'), nav1: 'ReportHistory' } : {},
+        this.state.userType == 5 ? { title: strings('login.sidemenu_makeorder'), nav1: 'OrderMasterScreen' } : {},
+        this.state.userType == 5 ? { title: strings('login.sidemenu_orderhistory'), nav1: 'CustomerOrderHistoryScreen' } : {},
+        this.state.userType == 5 ? { title: strings('login.sidemenu_report'), nav1: 'ReportScreen' } : {},
+        this.state.userType == 5 ? { title: strings('login.sidemenu_reporthistory'), nav1: 'ReportHistory' } : {},
       
         // this.state.userType == 0 ? {} : this.state.userType == 2 ? {} : { title: strings('login.passBook'), nav1: 'PassbookScreen' },
         // this.state.userType == 0 ? {} : this.state.userType == 2 ? {} : { title: strings('login.Products'), nav1: 'GiftProductsScreen' },
@@ -585,8 +593,6 @@ class CustSideMenu extends Component {
     console.log("usertype", this.state.userType);
     console.log("isLoaded", this.state.isLoaded);
 
-    console.log(this.state.menuList , 'menuList');
-
     return (
       
       <View style={{ backgroundColor: this.props.enableDarkTheme ? '#1a1a1a' : 'white', flex: 1, borderColor: this.props.enableDarkTheme ? 'gray' : 'black', borderWidth: 1, borderTopWidth: 0, opacity: 1 }}>
@@ -602,7 +608,7 @@ class CustSideMenu extends Component {
           }
           
           <StatusBar
-            backgroundColor={this.state.userType == 2 ? MyColors.distributorColor : MyColors.distributorColor}
+            backgroundColor={this.state.userType == 2 ? MyColors.dealerColor : MyColors.distributorColor}
             barStyle="light-content"
           />
           <View style={{ flex: 1, alignItems: 'center', paddingTop: 10, paddingBottom: 10 }} resizeMode="contain">
@@ -627,7 +633,7 @@ class CustSideMenu extends Component {
             />
           </View>
 
-          {/* <Card style={{ marginTop: 20, backgroundColor: this.props.enableDarkTheme ? 'black' : 'white', elevation: 0 }}>
+          <Card style={{ marginTop: 20, backgroundColor: this.props.enableDarkTheme ? 'black' : 'white', elevation: 0 }}>
             <Text style={{ marginTop: 10, marginLeft: 10, fontWeight: 'bold', color: this.props.enableDarkTheme ? 'white' : 'black' }}>{strings('login.choose_lang')} :</Text>
 
             <View style={{ marginLeft: 20, marginRight: 20 }}>
@@ -643,7 +649,7 @@ class CustSideMenu extends Component {
             </View>
 
            
-          </Card> */}
+          </Card>
          
 
          
@@ -678,7 +684,7 @@ class CustSideMenu extends Component {
                      </TouchableOpacity>
                  </View> */}
                 
-          <View style={{marginTop: 20}}>
+          <View>
             <Text style={{ textAlign: "center" }}>Version {version}</Text>
           </View>
 

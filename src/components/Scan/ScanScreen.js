@@ -17,7 +17,6 @@ var Sound = require('react-native-sound');
 import ImagePicker from 'react-native-image-picker';
 import MyColors from '../../Utility/Colors';
 import AsyncStorage from '@react-native-community/async-storage';
-import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 import Colors from '../../Utility/Colors';
@@ -110,7 +109,7 @@ class ScanScreen extends Component {
         this.didFocusSubscription.remove();
     }
     handleBackPress = () => {
-        this.props.navigation.navigate('HomeScreen');
+        this.props.navigation.navigate('LoginScreen');
         return true;
     }
     closeActivityIndicator() {
@@ -254,7 +253,7 @@ class ScanScreen extends Component {
             formData.append('ip_address', ip || "0.0.0.0");
             formData.append('latitude' , this.state?.currentLocation?.latitude || 0);
             formData.append('longitude' , this.state?.currentLocation?.longitude || 0);
-            formData.append('userType', this.state.userType);
+            // formData.append('userType', this.state.userType);
             formData.append('deviceType' , Platform.OS);
             if (this.props.languageControl) {
                 formData.append('language', 'en');
@@ -385,7 +384,7 @@ class ScanScreen extends Component {
             return (
                 <Header style={{ backgroundColor: this.state.userType == 2 ? MyColors.dealerColor : MyColors.distributorColor }}>
                     <Left style={{ flex: 0.2 }}>
-                        <TouchableOpacity onPress={() => {this.state.isSuccess ? this._scanAgain() : this.props.navigation.navigate('HomeScreen')}}>
+                        <TouchableOpacity onPress={() => {this.state.isSuccess ? this._scanAgain() : this.props.navigation.navigate('LoginScreen')}}>
                             <Icon type="FontAwesome5" name="arrow-left" style={{ fontSize: 20, color: '#FFFFFF', paddingLeft: 10, paddingRight: 10 }} />
                         </TouchableOpacity>
                     </Left>
@@ -407,7 +406,7 @@ class ScanScreen extends Component {
             return (
                 <Header style={{ backgroundColor: this.state.userType == 2 ? MyColors.dealerColor : MyColors.distributorColor}}>
                     <Left style={{ flex: 0.5 }}>
-                        <TouchableOpacity onPress={() => {this.state.isSuccess ? this._scanAgain() : this.props.navigation.navigate('HomeScreen')}}>
+                        <TouchableOpacity onPress={() => {this.state.isSuccess ? this._scanAgain() : this.props.navigation.navigate('LoginScreen')}}>
                             <Icon type="FontAwesome5" name="arrow-left" style={{ fontSize: 20, color: '#FFFFFF', paddingLeft: 10, paddingRight: 10 }} />
                         </TouchableOpacity>
                     </Left>
@@ -956,24 +955,7 @@ class ScanScreen extends Component {
                 
 
                 <View style={{width : '100%' , height : 0.5 , backgroundColor : 'lightgray' ,marginVertical : 10}}></View>
-                <MapView  
-                    style={styles.mapStyle}  
-                    showsUserLocation={false}  
-                    zoomEnabled={true}  
-                    zoomControlEnabled={true}  
-                    initialRegion={{  
-                        latitude: this.state.currentLocation?.latitude || 0,   
-                        longitude: this.state.currentLocation?.longitude || 0,  
-                        latitudeDelta: 0.001,  
-                        longitudeDelta: 0.001,  
-                    }}>  
-            
-                    <Marker 
-                        coordinate={{ latitude: this.state.currentLocation?.latitude || 0, longitude: this.state.currentLocation?.longitude || 0 }}  
-                        title={""}  
-                        description={""}  
-                    />  
-                </MapView> 
+                
                 <View 
                     style={{
                         flexDirection : 'row',

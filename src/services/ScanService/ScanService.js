@@ -42,14 +42,14 @@ class ScanService {
 
 
 		// var lUrl = URL + 'redeemCouponV1';
-		var lUrl = URL + 'redeemCouponCarpenter';
+		var lUrl = URL + 'redeemCouponCarpenterV1';
 		await fetch(lUrl, {
 			method: 'POST',
 			headers: {
 				'Accept': 'application\/json',
 				'Content-Type': 'multipart\/form-data',
 				'apikey': APIKEY,
-				'accesstoken': accesstoken
+				// 'accesstoken': accesstoken
 			},
 			body: pFormData,
 		})
@@ -68,10 +68,14 @@ class ScanService {
 	async redeemCustCoupon(pFormData,accesstoken) {
 		console.log("ACCESSTOKEN");
 		console.log(accesstoken);
+		console.log(pFormData);
+		console.log(APIKEY);
 
 
 		// var lUrl = URL + 'redeemCouponV1';
-		var lUrl = URL + 'redeemCouponAuthUser';
+		var lUrl = URL + 'redeemCouponOfficerUser';
+
+		console.log(lUrl);
 		await fetch(lUrl, {
 			method: 'POST',
 			headers: {

@@ -1,26 +1,37 @@
 import React from 'react';
-import { PersistGate } from 'redux-persist/integration/react';
-import { Provider } from 'react-redux';
-import { store, persistor } from './config/store';
-import { PermissionsAndroid, Platform } from 'react-native';
+import {PersistGate} from 'redux-persist/integration/react';
+import {Provider} from 'react-redux';
+import {store, persistor} from './config/store';
+import {PermissionsAndroid, Platform, Text} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Root } from "native-base";
-import { MenuProvider } from 'react-native-popup-menu';
+import {Root} from 'native-base';
+import {MenuProvider} from 'react-native-popup-menu';
 import Route from '../src/config/Route';
 // import firebase from 'react-native-firebase';
 import messaging from '@react-native-firebase/messaging';
 // import { Notification, NotificationOpen, RemoteMessage } from 'react-native-firebase';
 import 'react-native-gesture-handler';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
 import NotificationScreen from './components/Home/NotificationScreen';
 import ProductsHistoryScreen from './components/Verifier/ProductsHistoryScreen';
-import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
+import {
+  RESULTS,
+  checkNotifications,
+  requestNotifications,
+} from 'react-native-permissions';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const AppNavigator = createStackNavigator({
-  DemoNotificationScreen: { screen: NotificationScreen, navigationOptions: { header: null } },
+  DemoNotificationScreen: {
+    screen: NotificationScreen,
+    navigationOptions: {header: null},
+  },
 });
 const AppNavigator1 = createStackNavigator({
-  ProductsHistoryScreen: { screen: ProductsHistoryScreen, navigationOptions: { header: null } },
+  ProductsHistoryScreen: {
+    screen: ProductsHistoryScreen,
+    navigationOptions: {header: null},
+  },
 });
 const AppContainer = createAppContainer(AppNavigator);
 const AppContainer1 = createAppContainer(AppNavigator1);
@@ -31,32 +42,37 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       showHideNotifyScreen: false,
-      showHideProductsHistoryScreen: false
-    }
-    this._getPermission()
+      showHideProductsHistoryScreen: false,
+    };
+    this._getPermission();
     this.getAsyncData();
-    AsyncStorage.setItem('ShowHideScreenWW', JSON.stringify({ "showScreen": false }));
+    AsyncStorage.setItem(
+      'ShowHideScreenWW',
+      JSON.stringify({showScreen: false}),
+    );
   }
 
   getFireBaseToken = async () => {
+    await messaging()
+      .getToken()
+      .then(fcmToken => {
+        FCMTOKEN = fcmToken;
+        console.log('------fcmToken', fcmToken);
+        AsyncStorage.setItem('FCMTOKEN', JSON.stringify({fcmToken: fcmToken}));
+      });
 
-    await messaging().getToken()
-    .then(fcmToken => {
-      FCMTOKEN = fcmToken;
-      console.log('------fcmToken' ,fcmToken)
-      AsyncStorage.setItem('FCMTOKEN', JSON.stringify({ fcmToken: fcmToken }));
-    });
-    
     await checkNotifications().then(async ({status, settings}) => {
       if (status !== RESULTS.GRANTED) {
-        if(Platform.OS === 'android'){
+        if (Platform.OS === 'android') {
           await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+            android.PERMISSIONS.POST_NOTIFICATIONS,
           );
-        }else{
-          requestNotifications(['alert', 'sound']).then(({status, settings}) => {
-            console.log("====requestNotifications",status)
-          });
+        } else {
+          requestNotifications(['alert', 'sound']).then(
+            ({status, settings}) => {
+              console.log('====requestNotifications', status);
+            },
+          );
         }
       }
     });
@@ -67,7 +83,7 @@ export default class App extends React.Component {
     //   console.log('------fcmToken' ,fcmToken)
     //   AsyncStorage.setItem('FCMTOKEN', JSON.stringify({ fcmToken: fcmToken }));
     // });
-    
+
     // await checkNotifications().then(async ({status, settings}) => {
     //   console.log("=======status",status)
     //   if (status !== RESULTS.GRANTED) {
@@ -77,7 +93,7 @@ export default class App extends React.Component {
     //     );
     //   }
     // });
-  }
+  };
 
   _getPermission = () => {
     // firebase.messaging()
@@ -87,7 +103,7 @@ export default class App extends React.Component {
     //     console.log("No permission for firebase");
     //     this._getPermission();
     //   });
-  }
+  };
   async getAsyncData() {
     await AsyncStorage.multiGet(['ACCESSTOKEN'], (err, result) => {
       // var lData = JSON.parse(result[0][1]);
@@ -100,7 +116,7 @@ export default class App extends React.Component {
     await AsyncStorage.getItem('USERDATA', (err, result) => {
       var lData = JSON.parse(result);
       if (lData) {
-        console.log("lData of app.js");
+        console.log('lData of app.js');
         console.log(lData);
         if (lData.data) {
           userTypeee = lData.data.userType;
@@ -116,17 +132,17 @@ export default class App extends React.Component {
   }
   componentDidMount = async () => {
     // if (Platform.OS == 'ios') {
-      // this.messageListener = firebase.messaging().onMessage((message: RemoteMessage) => {
-      //   const notification = new firebase.notifications.Notification()
-      //     .setNotificationId(message._messageId)
-      //     .setTitle('KARIGAR Super Bond')
-      //     .setBody('Notification')
-      //     .setData({
-      //       key1: 'value1',
-      //       key2: 'value2',
-      //     });
-      //   firebase.notifications().displayNotification(notification)
-      // });
+    // this.messageListener = firebase.messaging().onMessage((message: RemoteMessage) => {
+    //   const notification = new firebase.notifications.Notification()
+    //     .setNotificationId(message._messageId)
+    //     .setTitle('KARIGAR Super Bond')
+    //     .setBody('Notification')
+    //     .setData({
+    //       key1: 'value1',
+    //       key2: 'value2',
+    //     });
+    //   firebase.notifications().displayNotification(notification)
+    // });
     // }
     this.getFireBaseToken();
 
@@ -177,43 +193,52 @@ export default class App extends React.Component {
     //   //       .android.setVibrate(1000)
     //   //       // .android.setSmallIcon(require('../src/images/Logo.jpg'))
     //   //       // .android.setBigText()
-           
+
     //   //   }
     //   //   firebase.notifications()
     //   //     .displayNotification(notification_to_be_displayed)
     //   //     .catch(err => console.log(err))
     //   // }
     // });
-  }
+  };
   render() {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <Root>
-            <MenuProvider>
-              {this.state.showHideNotifyScreen ?
-                <AppContainer ref={nav => { this.navigator = nav; }} />
-                :
-                this.state.showHideProductsHistoryScreen ?
-                  <AppContainer1 ref={nav => { this.navigator = nav; }} />
-                  :
-                  <Route />
-              }
-            </MenuProvider>
-          </Root>
+          <SafeAreaProvider>
+            <SafeAreaView style={{flex: 1}}>
+              <Root>
+                <MenuProvider>
+                  {this.state.showHideNotifyScreen ? (
+                    <AppContainer
+                      ref={nav => {
+                        this.navigator = nav;
+                      }}
+                    />
+                  ) : this.state.showHideProductsHistoryScreen ? (
+                    <AppContainer1
+                      ref={nav => {
+                        this.navigator = nav;
+                      }}
+                    />
+                  ) : (
+                    <Route />
+                  )}
+                </MenuProvider>
+              </Root>
+            </SafeAreaView>
+          </SafeAreaProvider>
         </PersistGate>
       </Provider>
     );
   }
-};
+}
 
-
-export const URL = "https://seqrloyalty.com/kebs/api/"; //live url
-
+export const URL = 'https://seqrloyalty.com/egms/api/'; //live url
 
 export const HEADER = {
-  Accept: 'application\/json',
-  'Content-Type': 'multipart\/form-data',
+  Accept: 'application/json',
+  'Content-Type': 'multipart/form-data',
 };
 // export const APIKEY = 'pFqDf7vuaOQ[87yF6D:=2OqjE*wa:0';
 export const APIKEY = 'iWM(E?dV4M^bNaZeGbJsB2V(0Cjs};';

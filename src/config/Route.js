@@ -25,7 +25,7 @@ import OutScreen from '../components/Verifier/OutScreen';
 import GiftProductsDetailsScreen from '../components/Verifier/GiftProductsDetailsScreen';
 import ImageSlideScreen from '../components/Verifier/ImageSlideScreen';
 import LanguageSelection from './LanguageSelection';
-import FingerPrintScannerDemo from '../components/FingerPrintScanner/FingerPrintScannerDemo';
+// import FingerPrintScannerDemo from '../components/FingerPrintScanner/FingerPrintScannerDemo';
 import CashBatchesScreen from '../components/CashBatchesScreen';
 import SetPasswordScreen from '../components/Login/setPasswordScreen';
 import LandingScreen from '../components/Login/LandingScreen';
@@ -106,7 +106,7 @@ const MainNavigator = createStackNavigator({
   GiftProductsDetailsScreen: { screen: GiftProductsDetailsScreen, navigationOptions: { header: null } },
   ImageSlideScreen: { screen: ImageSlideScreen, navigationOptions: { header: null } },
   LanguageSelection: { screen: LanguageSelection, navigationOptions: { header: null } },
-  FingerPrintScannerDemo: { screen: FingerPrintScannerDemo, navigationOptions: { header: null } },
+  // ProfileScreen: { screen: FingerPrintScannerDemo, navigationOptions: { header: null } },
   CashBatchesScreen: { screen: CashBatchesScreen, navigationOptions: { header: null } },
   SetPasswordScreen: { screen: SetPasswordScreen, navigationOptions: { header: null } },
   LandingScreen: { screen: LandingScreen, navigationOptions: { header: null } },
@@ -126,7 +126,7 @@ const MainNavigator = createStackNavigator({
 },
   {
     // initialRouteName: "LanguageSelection",
-    initialRouteName: "LoginScreen",
+    initialRouteName: "MainScreen",
     // initialRouteName: "LandingScreen",
   }
 );

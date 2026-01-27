@@ -42,7 +42,9 @@ class LoginService {
 	};
 
 	async logOutCustomer(pFormData,accesstoken) {
-		var lUrl = URL + 'logoutAuthUser';
+		var lUrl = URL + 'logoutOfficerUser';
+		console.log(pFormData);
+		console.log(accesstoken);
 		await fetch(lUrl, {
 			method: 'POST',
 			headers: {
@@ -96,7 +98,7 @@ class LoginService {
 
 	async loginCustomer(pFormData) {
 		// var lUrl = URL + 'login';
-		var lUrl = URL + 'loginAuthUser';
+		var lUrl = URL + 'loginOfficerUser';
 		console.log(lUrl);
 
 		await fetch(lUrl, {
@@ -110,6 +112,7 @@ class LoginService {
 		})
 			.then((response) => 
 			{
+				console.log("ACCESSTOKEN===",response.headers.map.accesstoken);
 				console.log(response.headers.map.accesstoken);
                 AsyncStorage.setItem('ACCESSTOKEN', response.headers.map.accesstoken);
                 // this.setAccessToken(response.headers.map.accesstoken);
@@ -118,7 +121,9 @@ class LoginService {
 			})
 			.then((responseJson) => {
 				console.log(responseJson, 'LoginService');
+				// console.log("ACCESSTOKEN===111111",responseJson.headers.map.accesstoken);
 				// alert(JSON.stringify(responseJson))
+				//  AsyncStorage.setItem('ACCESSTOKEN', responseJson.headers.map.accesstoken);
 				this.setRespData(responseJson);
 			})
 			.catch((error) => {
