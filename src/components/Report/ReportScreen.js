@@ -9,6 +9,7 @@ import {
   TextInput,
   Platform,
   Linking,
+  AppState,
 } from 'react-native';
 // import CompressImage from 'react-native-compress-image';
 import ImagePicker from 'react-native-image-picker';
@@ -33,7 +34,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import AndroidOpenSettings from 'react-native-android-open-settings';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { PERMISSIONS, request } from 'react-native-permissions';
+import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 
 class ReportScreen extends Component {
   state = {
@@ -53,6 +54,7 @@ class ReportScreen extends Component {
     isPermissionGranted: false,
     isStoragePermissionGranted: false,
   };
+
   getDataFromAPi = () => {
     AsyncStorage.multiGet(['USERDATA', 'ACCESSTOKEN'])
       .catch(err => {
@@ -66,39 +68,84 @@ class ReportScreen extends Component {
   };
 
   componentDidMount() {
-    this._requestPermission();
-    this._requestStoragePermission();
+    this._checkAndRequestPermissions();
+
+    // Listen to app state changes (when user returns from settings)
+    this.appStateSubscription = AppState.addEventListener('change', this._handleAppStateChange);
   }
 
-  _requestPermission = async () => {
-    request(
-      Platform.OS === 'ios'
-        ? PERMISSIONS.IOS.CAMERA
-        : PERMISSIONS.ANDROID.CAMERA,
-    ).then(result => {
-      if (result == 'granted') {
-        this.setState({ isPermissionGranted: true });
-      }
-      // console.log(result)
-    });
+  componentWillUnmount() {
+    // Clean up the app state listener
+    if (this.appStateSubscription) {
+      this.appStateSubscription.remove();
+    }
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'active') {
+      // App has come to the foreground, re-check permissions
+      this._checkAndRequestPermissions();
+    }
   };
 
-  _requestStoragePermission = async () => {
+  _checkAndRequestPermissions = async () => {
+    await this._checkCameraPermission();
+    await this._checkStoragePermission();
+  };
+
+  _checkCameraPermission = async () => {
+    const permission = Platform.OS === 'ios'
+      ? PERMISSIONS.IOS.CAMERA
+      : PERMISSIONS.ANDROID.CAMERA;
+
+    const result = await check(permission);
+
+    if (result === RESULTS.GRANTED) {
+      this.setState({ isPermissionGranted: true });
+    } else if (result === RESULTS.DENIED) {
+      // Permission has not been requested yet, request it
+      const requestResult = await request(permission);
+      this.setState({ isPermissionGranted: requestResult === RESULTS.GRANTED });
+    } else {
+      // Permission is blocked or unavailable
+      this.setState({ isPermissionGranted: false });
+    }
+  };
+
+  _checkStoragePermission = async () => {
     const permission = Platform.OS === 'ios'
       ? PERMISSIONS.IOS.PHOTO_LIBRARY
       : Platform.Version >= 33
         ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
         : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
-    request(permission).then(result => {
-      if (result == 'granted') {
-        this.setState({ isStoragePermissionGranted: true });
-      }
-    });
+
+    const result = await check(permission);
+
+    if (result === RESULTS.GRANTED) {
+      this.setState({ isStoragePermissionGranted: true });
+    } else if (result === RESULTS.DENIED) {
+      // Permission has not been requested yet, request it
+      const requestResult = await request(permission);
+      this.setState({ isStoragePermissionGranted: requestResult === RESULTS.GRANTED });
+    } else {
+      // Permission is blocked or unavailable
+      this.setState({ isStoragePermissionGranted: false });
+    }
   };
 
   imagePickerHandler = async type => {
     try {
-      if (this.state.isPermissionGranted && (type === 'capture' || this.state.isStoragePermissionGranted)) {
+      // Re-check permissions before opening picker
+      await this._checkAndRequestPermissions();
+
+      const needsCameraPermission = type === 'capture';
+      const needsStoragePermission = type === 'gallery';
+
+      const hasRequiredPermissions = needsCameraPermission
+        ? this.state.isPermissionGranted
+        : this.state.isStoragePermissionGranted;
+
+      if (hasRequiredPermissions) {
         if (type == 'capture') {
           await launchCamera(
             {
@@ -147,18 +194,22 @@ class ReportScreen extends Component {
           );
         }
       } else {
-        Alert.alert('Need Permissions ', 'Camera and storage permissions are required.', [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-          },
-          {
-            text: 'Open Setting',
-            onPress: () => {
-              this._openSettings();
+        Alert.alert(
+          'Need Permissions',
+          'Camera and storage permissions are required.',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
             },
-          },
-        ]);
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                this._openSettings();
+              },
+            },
+          ]
+        );
       }
     } catch (e) {
       console.log(e);
@@ -243,6 +294,7 @@ class ReportScreen extends Component {
       AndroidOpenSettings.generalSettings();
     }
   }
+
   _onPressSendButton = () => {
     this.setState({ showHideLoading: true });
     const photo = {
@@ -332,6 +384,7 @@ class ReportScreen extends Component {
         alert(error);
       });
   };
+
   _showHeader() {
     if (Platform.OS == 'ios') {
       return (
@@ -378,6 +431,7 @@ class ReportScreen extends Component {
       );
     }
   }
+
   render() {
     return (
       <ScrollView
@@ -564,7 +618,7 @@ class ReportScreen extends Component {
           keyboardType="phone-pad"
           onChangeText={mobile_number => this.setState({ mobile_number })}
         />
-        
+
 
         <View
           style={{
@@ -606,10 +660,12 @@ class ReportScreen extends Component {
     );
   }
 }
+
 const mapStateToProps = state => {
   return {
     enableDarkTheme: state.VerifierReducer.enableDarkTheme,
     languageControl: state.VerifierReducer.languageEnglish,
   };
 };
+
 export default connect(mapStateToProps, null)(ReportScreen);
